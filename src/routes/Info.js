@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 function Info() {
     const [cartoonList, setCartoonList] = useState();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const id = searchParams.get('id');
     const nickname = searchParams.get('nickname');
 
@@ -17,7 +17,7 @@ function Info() {
 
     useEffect(()=> {
         getInfo();
-    }, []);
+    });
 
     function getLoop() {
         const newArr = [];
@@ -37,7 +37,7 @@ function Info() {
     return (
         <div className='Info'>
             Info<br/>
-            {id=='a'?'유동':`아이디: ${id}`}<br/>
+            {id==='a'?'유동':`아이디: ${id}`}<br/>
             닉네임: {nickname}
             <hr/>
             <div>
