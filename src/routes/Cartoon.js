@@ -1,11 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 function Cartoon() {
     const [cartoonList, setCartoonList] = useState();
+    const [searchParams] = useSearchParams();
+    const page = searchParams.get('page') || 0;
 
     async function getCartoon() {
-        await fetch('http://localhost:4000/cartoon?page=1')
+        await fetch(`http://localhost:4000/cartoon?page=${page}`)
         .then(response => response.json())
         .then(data => {
             setCartoonList(data.result);
