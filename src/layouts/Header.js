@@ -1,9 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 function Header() {
     return (
         <header>
-            <a href="/">홈</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="/board">게시판</a>
+            <Link to="/">홈</Link>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <Link to="/cartoon">게시판</Link>
             <hr/>
         </header>
     );
