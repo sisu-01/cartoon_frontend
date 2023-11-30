@@ -24,7 +24,7 @@ function Cartoon() {
             const i = cartoonList[key];
             newArr.push(
                 <tr key={key}>
-                    <td>{i['id']}</td>
+                    <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='blank'>{i['id']}</a></td>
                     <td>{i['title']}</td>
                     <td><Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>{i['writer_nickname']}</Link></td>
                     <td>{i['date']}</td>
