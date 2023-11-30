@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
 
 function Cartoon() {
     const [cartoonList, setCartoonList] = useState();
 
     async function getCartoon() {
-        await fetch('http://localhost:4000/cartoon/0')
+        await fetch('http://localhost:4000/cartoon?page=1')
         .then(response => response.json())
         .then(data => {
             setCartoonList(data.result);
@@ -23,7 +24,7 @@ function Cartoon() {
                 <tr key={key}>
                     <td>{i['id']}</td>
                     <td>{i['title']}</td>
-                    <td>{i['writer_nickname']}</td>
+                    <td><Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>{i['writer_nickname']}</Link></td>
                     <td>{i['date']}</td>
                     <td>{i['recommend']}</td>
                 </tr>
@@ -34,6 +35,12 @@ function Cartoon() {
 
     return (
         <div className='Cartoon'>
+            <div>
+                <ol>
+                    <li>recommend &lt;= n;</li>
+                    <li>ordery by recommend; or order by id;</li>
+                </ol>
+            </div>
             <table>
                 <thead>
                     <tr>
