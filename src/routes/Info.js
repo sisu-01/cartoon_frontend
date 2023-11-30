@@ -4,11 +4,12 @@ import { useSearchParams } from 'react-router-dom';
 function Info() {
     const [cartoonList, setCartoonList] = useState();
     const [searchParams] = useSearchParams();
+    const page = searchParams.get('page') || 0;
     const id = searchParams.get('id');
     const nickname = searchParams.get('nickname');
 
     async function getInfo() {
-        await fetch(`http://localhost:4000/info?page=0&id=${id}&nickname=${nickname}`)
+        await fetch(`http://localhost:4000/info?page=${page}&id=${id}&nickname=${nickname}`)
         .then(response => response.json())
         .then(data => {
             setCartoonList(data.result);
