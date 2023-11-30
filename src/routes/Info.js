@@ -17,7 +17,7 @@ function Info() {
 
     useEffect(()=> {
         getInfo();
-    });
+    }, []);
 
     function getLoop() {
         const newArr = [];
