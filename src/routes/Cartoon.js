@@ -3,36 +3,66 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as common from '../util/common';
 
 function Cartoon() {
+    const [page, setPage] = useState();
     const [cartoonList, setCartoonList] = useState();
+    const [perPage, setPerPage] = useState();
+    const [count, setCount] = useState();
     const [searchParams] = useSearchParams();
-    const page = searchParams.get('page') || 0;
-    
-    const [last, setLast] = useState();
+    const tempPage = Number(searchParams.get('page')) || 0;
     const navigate = useNavigate();
 
     function getCartoon() {
         console.log('getCartoon');
-        fetch(`http://localhost:4000/cartoon?page=${page}`)
+        fetch(`http://localhost:4000/cartoon?page=${tempPage}`)
         .then(response => response.json())
         .then(data => {
             if(data['ok']){
                 setCartoonList(data['list']);
-                pagination(data['pagination']);
+                setPage(data['page']);
+                setPerPage(data['perPage']);
+                setCount(data['count']);
             }else{
                 setCartoonList();
             }
         })
     }
 
-    function pagination(props) {
-        console.log('pagination', props);
-        setLast(props['last']);
-    }
+    //page, perPage, count, pageBtn;
     function renderPageButton() {
         console.log('renderPageButton');
+        const pageBtn = 9;
+
+        const pageGroup = Math.ceil(page / pageBtn);//현재 그룹
+        const totalPage = Math.ceil(count / perPage);//전체 페이지 개수
+        const totalGroup = Math.ceil(totalPage / pageBtn);//전체 그룹 개수
+
+        const startPage = pageGroup * pageBtn - pageBtn + 1;
+        let tempEnd = pageGroup * pageBtn;
+        if(tempEnd > totalPage) tempEnd = totalPage;
+        const endPage = tempEnd;
+
         const newArr = [];
-        newArr.push(<button key='처음' onClick={pageHandler} value='1'>처음</button>);
-        newArr.push(<button key='마지막' onClick={pageHandler} value={last}>마지막</button>);
+        if (pageGroup > 1) {
+            newArr.push(<button key='first' onClick={pageHandler} value={1}>&lt;&lt;</button>);
+            newArr.push(<button key='prev' onClick={pageHandler} value={startPage-1}>&lt;</button>);
+        } else {
+            newArr.push(<button key='disabled_first' disabled>&lt;&lt;</button>);
+            newArr.push(<button key='disabled_prev' disabled>&lt;</button>);
+        }
+        for (let i = startPage; i <= endPage; i++) {
+            if (page === i) {
+                newArr.push(<button key={i} disabled>{i}</button>);
+            } else {
+                newArr.push(<button key={i} onClick={pageHandler} value={i}>{i}</button>);
+            }
+        }
+        if (pageGroup < totalGroup) {
+            newArr.push(<button key='next' onClick={pageHandler} value={endPage+1}>&gt;</button>);
+            newArr.push(<button key='last' onClick={pageHandler} value={totalPage}>&gt;&gt;</button>);
+        } else {
+            newArr.push(<button key='disabled_next' disabled>&gt;</button>);
+            newArr.push(<button key='disabled_last' disabled>&gt;&gt;</button>);
+        }
         return newArr;
     }
     function pageHandler(e) {
@@ -45,8 +75,8 @@ function Cartoon() {
         getCartoon();
     }, [searchParams]);
 
-    function getLoop() {
-        console.log('getLoop');
+    function renderCartoonList() {
+        console.log('renderCartoonList');
         const newArr = [];
         if(cartoonList){
             for(const key in cartoonList) {
@@ -89,7 +119,7 @@ function Cartoon() {
                     </tr>
                 </thead>
                 <tbody>
-                    {getLoop()}
+                    {renderCartoonList()}
                 </tbody>
             </table>
             <div>
