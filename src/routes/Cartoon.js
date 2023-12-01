@@ -1,29 +1,52 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as common from '../util/common';
 
 function Cartoon() {
     const [cartoonList, setCartoonList] = useState();
     const [searchParams] = useSearchParams();
     const page = searchParams.get('page') || 0;
+    
+    const [last, setLast] = useState();
+    const navigate = useNavigate();
 
     function getCartoon() {
+        console.log('getCartoon');
         fetch(`http://localhost:4000/cartoon?page=${page}`)
         .then(response => response.json())
         .then(data => {
             if(data['ok']){
                 setCartoonList(data['list']);
+                pagination(data['pagination']);
             }else{
                 setCartoonList();
             }
         })
     }
 
+    function pagination(props) {
+        console.log('pagination', props);
+        setLast(props['last']);
+    }
+    function renderPageButton() {
+        console.log('renderPageButton');
+        const newArr = [];
+        newArr.push(<button key='처음' onClick={pageHandler} value='1'>처음</button>);
+        newArr.push(<button key='마지막' onClick={pageHandler} value={last}>마지막</button>);
+        return newArr;
+    }
+    function pageHandler(e) {
+        console.log('pageHandler');
+        const value = e.target.value;
+        navigate(`/cartoon?page=${value}`);
+    };
+
     useEffect(() => {
         getCartoon();
-    }, []);
+    }, [searchParams]);
 
     function getLoop() {
+        console.log('getLoop');
         const newArr = [];
         if(cartoonList){
             for(const key in cartoonList) {
@@ -69,6 +92,9 @@ function Cartoon() {
                     {getLoop()}
                 </tbody>
             </table>
+            <div>
+                {renderPageButton()}
+            </div>
         </div>
     );
 }
