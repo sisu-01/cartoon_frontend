@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import * as common from '../util/common';
 
 function Info() {
     const [cartoonList, setCartoonList] = useState();
@@ -24,10 +25,11 @@ function Info() {
         const newArr = [];
         for(const key in cartoonList) {
             const i = cartoonList[key];
+            const date = common.dateFormat(i['date']);
             newArr.push(
                 <tr key={key}>
                     <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='blank'>{i['title']}</a></td>
-                    <td>{i['date']}</td>
+                    <td>{date}</td>
                     <td>{i['recommend']}</td>
                 </tr>
             )
