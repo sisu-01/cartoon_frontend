@@ -25,6 +25,7 @@ function Info() {
                 setCount(data['count']);
             }else{
                 setCartoonList();
+                alert('그런거 없긔');
             }
         })
         .catch(err => {
