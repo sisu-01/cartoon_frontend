@@ -19,35 +19,35 @@ export function dateFormat(date){
 
 export function paging(page, perPage, count, pageBtn, fnc) {
     const pageGroup = Math.ceil(page / pageBtn);//현재 그룹
-        const totalPage = Math.ceil(count / perPage);//전체 페이지 개수
-        const totalGroup = Math.ceil(totalPage / pageBtn);//전체 그룹 개수
+    const totalPage = Math.ceil(count / perPage);//전체 페이지 개수
+    const totalGroup = Math.ceil(totalPage / pageBtn);//전체 그룹 개수
 
-        const startPage = pageGroup * pageBtn - pageBtn + 1;
-        let tempEnd = pageGroup * pageBtn;
-        if(tempEnd > totalPage) tempEnd = totalPage;
-        const endPage = tempEnd;
+    const startPage = pageGroup * pageBtn - pageBtn + 1;
+    let tempEnd = pageGroup * pageBtn;
+    if(tempEnd > totalPage) tempEnd = totalPage;
+    const endPage = tempEnd;
 
-        const newArr = [];
-        if (pageGroup > 1) {
-            newArr.push(<button key='first' onClick={fnc} value={1}>&lt;&lt;</button>);
-            newArr.push(<button key='prev' onClick={fnc} value={startPage-1}>&lt;</button>);
+    const newArr = [];
+    if (pageGroup > 1) {
+        newArr.push(<button key='first' onClick={fnc} value={1}>&lt;&lt;</button>);
+        newArr.push(<button key='prev' onClick={fnc} value={startPage-1}>&lt;</button>);
+    } else {
+        newArr.push(<button key='disabled_first' disabled>&lt;&lt;</button>);
+        newArr.push(<button key='disabled_prev' disabled>&lt;</button>);
+    }
+    for (let i = startPage; i <= endPage; i++) {
+        if (page === i) {
+            newArr.push(<button key={i} disabled>{i}</button>);
         } else {
-            newArr.push(<button key='disabled_first' disabled>&lt;&lt;</button>);
-            newArr.push(<button key='disabled_prev' disabled>&lt;</button>);
+            newArr.push(<button key={i} onClick={fnc} value={i}>{i}</button>);
         }
-        for (let i = startPage; i <= endPage; i++) {
-            if (page === i) {
-                newArr.push(<button key={i} disabled>{i}</button>);
-            } else {
-                newArr.push(<button key={i} onClick={fnc} value={i}>{i}</button>);
-            }
-        }
-        if (pageGroup < totalGroup) {
-            newArr.push(<button key='next' onClick={fnc} value={endPage+1}>&gt;</button>);
-            newArr.push(<button key='last' onClick={fnc} value={totalPage}>&gt;&gt;</button>);
-        } else {
-            newArr.push(<button key='disabled_next' disabled>&gt;</button>);
-            newArr.push(<button key='disabled_last' disabled>&gt;&gt;</button>);
-        }
-        return newArr;
+    }
+    if (pageGroup < totalGroup) {
+        newArr.push(<button key='next' onClick={fnc} value={endPage+1}>&gt;</button>);
+        newArr.push(<button key='last' onClick={fnc} value={totalPage}>&gt;&gt;</button>);
+    } else {
+        newArr.push(<button key='disabled_next' disabled>&gt;</button>);
+        newArr.push(<button key='disabled_last' disabled>&gt;&gt;</button>);
+    }
+    return newArr;
 }
