@@ -59,44 +59,6 @@ function Cartoon() {
             );
         }
     }
-    //page, perPage, count, pageBtn;
-    function renderPageButton() {
-        console.log('renderPageButton');
-        const pageBtn = 9;
-
-        const pageGroup = Math.ceil(page / pageBtn);//현재 그룹
-        const totalPage = Math.ceil(count / perPage);//전체 페이지 개수
-        const totalGroup = Math.ceil(totalPage / pageBtn);//전체 그룹 개수
-
-        const startPage = pageGroup * pageBtn - pageBtn + 1;
-        let tempEnd = pageGroup * pageBtn;
-        if(tempEnd > totalPage) tempEnd = totalPage;
-        const endPage = tempEnd;
-
-        const newArr = [];
-        if (pageGroup > 1) {
-            newArr.push(<button key='first' onClick={pageHandler} value={1}>&lt;&lt;</button>);
-            newArr.push(<button key='prev' onClick={pageHandler} value={startPage-1}>&lt;</button>);
-        } else {
-            newArr.push(<button key='disabled_first' disabled>&lt;&lt;</button>);
-            newArr.push(<button key='disabled_prev' disabled>&lt;</button>);
-        }
-        for (let i = startPage; i <= endPage; i++) {
-            if (page === i) {
-                newArr.push(<button key={i} disabled>{i}</button>);
-            } else {
-                newArr.push(<button key={i} onClick={pageHandler} value={i}>{i}</button>);
-            }
-        }
-        if (pageGroup < totalGroup) {
-            newArr.push(<button key='next' onClick={pageHandler} value={endPage+1}>&gt;</button>);
-            newArr.push(<button key='last' onClick={pageHandler} value={totalPage}>&gt;&gt;</button>);
-        } else {
-            newArr.push(<button key='disabled_next' disabled>&gt;</button>);
-            newArr.push(<button key='disabled_last' disabled>&gt;&gt;</button>);
-        }
-        return newArr;
-    }
     function pageHandler(e) {
         console.log('pageHandler');
         const value = e.target.value;
@@ -124,7 +86,7 @@ function Cartoon() {
                 </tbody>
             </table>
             <div>
-                {renderPageButton()}
+                {common.paging(page, perPage, count, 9, pageHandler)}
             </div>
         </div>
     );
