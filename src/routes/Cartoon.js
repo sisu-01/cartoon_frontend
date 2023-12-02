@@ -13,7 +13,7 @@ function Cartoon() {
 
     function getCartoon() {
         console.log('getCartoon');
-        fetch(`http://localhost:4000/cartoon?page=${tempPage}`)
+        fetch(`http://172.30.1.70:4000/cartoon?page=${tempPage}`)
         .then(response => response.json())
         .then(data => {
             if(data['ok']){
@@ -25,6 +25,9 @@ function Cartoon() {
                 setCartoonList();
             }
         })
+        .catch(err => {
+            alert(err);
+        });
     }
 
     useEffect(() => {
