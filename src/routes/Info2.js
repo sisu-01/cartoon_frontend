@@ -126,7 +126,7 @@ function Info2() {
             );
         }
 
-        function Cut(props) {
+        function Cut() {
             function CutHandler(cut) {
                 let url = '';
                 url += `/info2?page=1&id=${id}&nickname=${nickname}`
@@ -141,15 +141,20 @@ function Info2() {
                 }
                 navigate(url);
             }
+            function optionLoop() {
+                const newArr = [];
+                for (let i = 1; i < 1000; i++) {
+                    let z = Math.floor( (i - 1) / 50 ) * 50;
+                    newArr.push(
+                        <option key={i}>{i}, {z}</option>
+                    )
+                }
+                return newArr;
+            }
             return (
                 <div>
                     <select id='cut' onChange={({target: {value}}) => CutHandler(value)}>
-                        <option value='0'>0</option>
-                        <option value='50'>50</option>
-                        <option value='100'>100</option>
-                        <option value='150'>150</option>
-                        <option value='200'>200</option>
-                        <option value='250'>250</option>
+                        {optionLoop()}
                     </select>
                     <label htmlFor='cut'>개추컷</label>
                 </div>
