@@ -13,7 +13,7 @@ function Info2() {
         console.log('##Test');
         const [searchParams] = useSearchParams();
         const tempPage = Number(searchParams.get('page')) || 1;
-        const tempOrder = Boolean(searchParams.get('order')) || false;
+        const tempOrder = searchParams.get('order') === 'true' || false;
 
         const [page, setPage] = useState();
         const [cartoonList, setCartoonList] = useState();
