@@ -14,6 +14,7 @@ function Info2() {
         const [searchParams] = useSearchParams();
         const tempPage = Number(searchParams.get('page')) || 1;
         const tempOrder = searchParams.get('order') === 'true' || false;
+        const tempCut = searchParams.get('cut') || false;
 
         const [page, setPage] = useState();
         const [cartoonList, setCartoonList] = useState();
@@ -33,8 +34,8 @@ function Info2() {
                 url += '&order=true';
             }
             //개추 컷이 있다면
-            if (cut > 0) {
-                url += `&cut=${null}`;
+            if (tempCut > 0) {
+                url += `&cut=${tempCut}`;
             }
             console.log(url);
             fetch(url)
@@ -96,8 +97,8 @@ function Info2() {
                 url += '&order=true';
             }
             //개추 컷이 있다면
-            if (cut > 0) {
-                url += `&cut=${null}`;
+            if (tempCut > 0) {
+                url += `&cut=${tempCut}`;
             }
             navigate(url);
         };
@@ -112,8 +113,8 @@ function Info2() {
                     url += '&order=true';
                 }
                 //개추 컷이 있다면
-                if (cut > 0) {
-                    url += `&cut=${null}`;
+                if (tempCut > 0) {
+                    url += `&cut=${tempCut}`;
                 }
                 navigate(url);
             }
@@ -125,9 +126,40 @@ function Info2() {
             );
         }
 
+        function Cut(props) {
+            function CutHandler(cut) {
+                let url = '';
+                url += `/info2?page=1&id=${id}&nickname=${nickname}`
+
+                //개추 순 필터가 있다면>
+                if (tempOrder) {
+                    url += '&order=true';
+                }
+                //개추 컷이 있다면
+                if (cut > 0) {
+                    url += `&cut=${cut}`;
+                }
+                navigate(url);
+            }
+            return (
+                <div>
+                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)}>
+                        <option value='0'>0</option>
+                        <option value='50'>50</option>
+                        <option value='100'>100</option>
+                        <option value='150'>150</option>
+                        <option value='200'>200</option>
+                        <option value='250'>250</option>
+                    </select>
+                    <label htmlFor='cut'>개추컷</label>
+                </div>
+            );
+        }
+
         return (
             <div>
                 <Order checked={tempOrder} />
+                <Cut />
                 <table>
                     <thead>
                         <tr>
