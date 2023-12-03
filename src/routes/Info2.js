@@ -26,7 +26,8 @@ function Info2() {
         async function getInfo() {
             console.log('getInfo2');
             let url = '';
-            url += `http://172.30.1.70:4000/info${window.location.search}`;
+            url += `http://localhost:4000/info`;
+            url += `?page=${tempPage}&id=${id}&nickname=${nickname}`;
             //개추 순 필터가 있다면>
             if (orderByRecommend) {
                 url += '&개추순=true';
@@ -132,8 +133,8 @@ function Info2() {
     }
 
     return (
-        <div className='Info'>
-            Info<br/>
+        <div className='Info2'>
+            Info2<br/>
             {id==='a'?'유동':`아이디: ${id}`}<br/>
             닉네임: {nickname}
             <hr/>
