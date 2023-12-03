@@ -12,28 +12,31 @@ function Info2() {
     function Test() {
         console.log('##Test');
         const [searchParams] = useSearchParams();
-        const [page, setPage] = useState(Number(searchParams.get('page')) || 0);
+        const tempPage = Number(searchParams.get('page')) || 1;
+        const tempOrder = Boolean(searchParams.get('order')) || false;
+
+        const [page, setPage] = useState();
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
         const navigate = useNavigate();
         
         //필터
-        const [orderByRecommend, setOrderByRecommend] = useState();
-        const [cut, setCut] = useState(0);
+        const [cut, setCut] = useState();
 
         async function getInfo() {
             let url = '';
             url += `http://localhost:4000/info`;
-            url += `?page=${page}&id=${id}&nickname=${nickname}`;
+            url += `?page=${tempPage}&id=${id}&nickname=${nickname}`;
             //개추 순 필터가 있다면>
-            if (orderByRecommend) {
+            if (tempOrder) {
                 url += '&order=true';
             }
             //개추 컷이 있다면
             if (cut > 0) {
                 url += `&cut=${null}`;
             }
+            console.log(url);
             fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -84,13 +87,12 @@ function Info2() {
         function pageHandler(e) {
             console.log('pageHandler');
             const page = e.target.value;
-            setPage(page);
 
             let url = '';
             url += `/info2?page=${page}&id=${id}&nickname=${nickname}`
 
             //개추 순 필터가 있다면>
-            if (orderByRecommend) {
+            if (tempOrder) {
                 url += '&order=true';
             }
             //개추 컷이 있다면
@@ -103,7 +105,7 @@ function Info2() {
         function Order(props) {
             function OrderHandler(checked) {
                 let url = '';
-                url += `/info2?page=${page}&id=${id}&nickname=${nickname}`
+                url += `/info2?page=1&id=${id}&nickname=${nickname}`
 
                 //개추 순 필터가 있다면>
                 if (checked) {
@@ -125,7 +127,7 @@ function Info2() {
 
         return (
             <div>
-                <Order checked={orderByRecommend} onChange={setOrderByRecommend} />
+                <Order checked={tempOrder} />
                 <table>
                     <thead>
                         <tr>
