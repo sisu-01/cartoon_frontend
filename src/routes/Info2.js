@@ -12,31 +12,28 @@ function Info2() {
     function Test() {
         console.log('##Test');
         const [searchParams] = useSearchParams();
-        const [page, setPage] = useState();
+        const [page, setPage] = useState(Number(searchParams.get('page')) || 0);
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
-        const tempPage = Number(searchParams.get('page')) || 0;
         const navigate = useNavigate();
         
         //필터
-        const [orderByRecommend, setOrderByRecommend] = useState(false);
+        const [orderByRecommend, setOrderByRecommend] = useState();
         const [cut, setCut] = useState(0);
 
         async function getInfo() {
-            console.log('getInfo2');
             let url = '';
             url += `http://localhost:4000/info`;
-            url += `?page=${tempPage}&id=${id}&nickname=${nickname}`;
+            url += `?page=${page}&id=${id}&nickname=${nickname}`;
             //개추 순 필터가 있다면>
             if (orderByRecommend) {
-                url += '&개추순=true';
+                url += '&order=true';
             }
             //개추 컷이 있다면
             if (cut > 0) {
                 url += `&cut=${null}`;
             }
-            console.log(url);
             fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -55,7 +52,7 @@ function Info2() {
             });
         }
     
-        useEffect(()=> {
+        useEffect(() => {
             getInfo();
         }, [searchParams]);
     
@@ -87,12 +84,14 @@ function Info2() {
         function pageHandler(e) {
             console.log('pageHandler');
             const page = e.target.value;
+            setPage(page);
+
             let url = '';
             url += `/info2?page=${page}&id=${id}&nickname=${nickname}`
 
             //개추 순 필터가 있다면>
             if (orderByRecommend) {
-                url += '&개추순=true';
+                url += '&order=true';
             }
             //개추 컷이 있다면
             if (cut > 0) {
@@ -102,9 +101,23 @@ function Info2() {
         };
 
         function Order(props) {
+            function OrderHandler(checked) {
+                let url = '';
+                url += `/info2?page=${page}&id=${id}&nickname=${nickname}`
+
+                //개추 순 필터가 있다면>
+                if (checked) {
+                    url += '&order=true';
+                }
+                //개추 컷이 있다면
+                if (cut > 0) {
+                    url += `&cut=${null}`;
+                }
+                navigate(url);
+            }
             return (
                 <div>
-                    <input type='checkbox' id='order' checked={props.checked} onChange={({ target: { checked } }) => props.onChange(checked)} />
+                    <input type='checkbox' id='order' checked={props.checked} onChange={({ target: { checked } }) => OrderHandler(checked)} />
                     <label htmlFor='order'>개추순으로 정렬</label>
                 </div>
             );
