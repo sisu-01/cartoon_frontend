@@ -88,7 +88,7 @@ function Info() {
             const page = e.target.value;
 
             let url = '';
-            url += `/info2?page=${page}&id=${id}&nickname=${nickname}`
+            url += `/info?page=${page}&id=${id}&nickname=${nickname}`
             if (tempSort) {
                 url += '&sort=true';
             }
@@ -101,7 +101,7 @@ function Info() {
         function Sort(props) {
             function SortHandler(checked) {
                 let url = '';
-                url += `/info2?page=1&id=${id}&nickname=${nickname}`
+                url += `/info?page=1&id=${id}&nickname=${nickname}`
                 if (checked) {
                     url += '&sort=true';
                 }
@@ -122,7 +122,7 @@ function Info() {
             function CutHandler(cut) {
                 console.log('cut', cut);
                 let url = '';
-                url += `/info2?page=1&id=${id}&nickname=${nickname}`
+                url += `/info?page=1&id=${id}&nickname=${nickname}`
                 if (tempSort) {
                     url += '&sort=true';
                 }
