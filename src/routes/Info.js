@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as common from '../util/common';
 
 function Info() {
     console.log('######################한 번만');
-    const initParam = new URLSearchParams(window.location.search);
-    const id = initParam.get('id');
-    const nickname = initParam.get('nickname');
-    const result = '/cartoon/원래거';
+    const initUrl = new URL(window.location.href);
+    const prev = initUrl.searchParams.get('prev') || '';
+    const id = initUrl.searchParams.get('id');
+    const nickname = initUrl.searchParams.get('nickname');
+
+    //get param prev 제거
+    //수정 새로고침 문제
+    initUrl.searchParams.delete('prev');
+    window.history.pushState(null, null, initUrl.href);
 
     function Test() {
         console.log('##Test');
@@ -166,7 +171,7 @@ function Info() {
                 {id==='a'?'유동':`아이디: ${id}`}<br/>
                 닉네임: {nickname}
                 <hr/>
-                <button>{result}</button>
+                <Link to={`/cartoon${prev}`}>/cartoon{prev}</Link>
             </div>
             <Test />
         </div>

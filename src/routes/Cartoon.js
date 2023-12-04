@@ -8,6 +8,7 @@ function Cartoon() {
     const [perPage, setPerPage] = useState();
     const [count, setCount] = useState();
     const [searchParams] = useSearchParams();
+    const prev = encodeURIComponent(window.location.search);
     const tempPage = Number(searchParams.get('page')) || 0;
     const navigate = useNavigate();
 
@@ -44,7 +45,11 @@ function Cartoon() {
                 newArr.push(
                     <tr key={key}>
                         <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='blank'>{i['title']}</a></td>
-                        <td><Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>{i['writer_nickname']}</Link></td>
+                        <td>
+                            <Link to={`/info?prev=${prev}&id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>
+                                {i['writer_nickname']}
+                            </Link>
+                        </td>
                         <td>{date}</td>
                         <td>{i['recommend']}</td>
                     </tr>
