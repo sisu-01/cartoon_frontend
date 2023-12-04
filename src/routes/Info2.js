@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation , useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import * as common from '../util/common';
 
 function Info2() {
@@ -11,30 +11,28 @@ function Info2() {
 
     function Test() {
         console.log('##Test');
+        //url 파라미터들
         const [searchParams] = useSearchParams();
         const tempPage = Number(searchParams.get('page')) || 1;
-        const tempOrder = searchParams.get('order') === 'true' || false;
+        const tempSort = searchParams.get('sort') === 'true' || false;
         const tempCut = searchParams.get('cut') || false;
 
+        //페이징에 필요한 정보들
         const [page, setPage] = useState();
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
+
         const navigate = useNavigate();
-        
-        //필터
-        const [cut, setCut] = useState();
 
         async function getInfo() {
             let url = '';
             url += `http://localhost:4000/info`;
             url += `?page=${tempPage}&id=${id}&nickname=${nickname}`;
-            //개추 순 필터가 있다면>
-            if (tempOrder) {
-                url += '&order=true';
+            if (tempSort) {
+                url += '&sort=true';
             }
-            //개추 컷이 있다면
-            if (tempCut > 0) {
+            if (tempCut) {
                 url += `&cut=${tempCut}`;
             }
             console.log(url);
@@ -91,70 +89,57 @@ function Info2() {
 
             let url = '';
             url += `/info2?page=${page}&id=${id}&nickname=${nickname}`
-
-            //개추 순 필터가 있다면>
-            if (tempOrder) {
-                url += '&order=true';
+            if (tempSort) {
+                url += '&sort=true';
             }
-            //개추 컷이 있다면
-            if (tempCut > 0) {
+            if (tempCut) {
                 url += `&cut=${tempCut}`;
             }
             navigate(url);
         };
 
-        function Order(props) {
-            function OrderHandler(checked) {
+        function Sort(props) {
+            function SortHandler(checked) {
                 let url = '';
                 url += `/info2?page=1&id=${id}&nickname=${nickname}`
-
-                //개추 순 필터가 있다면>
                 if (checked) {
-                    url += '&order=true';
+                    url += '&sort=true';
                 }
-                //개추 컷이 있다면
-                if (tempCut > 0) {
+                if (tempCut) {
                     url += `&cut=${tempCut}`;
                 }
                 navigate(url);
             }
             return (
                 <div>
-                    <input type='checkbox' id='order' checked={props.checked} onChange={({ target: { checked } }) => OrderHandler(checked)} />
-                    <label htmlFor='order'>개추순으로 정렬</label>
+                    <input type='checkbox' id='sort' checked={props.checked} onChange={({ target: { checked } }) => SortHandler(checked)} />
+                    <label htmlFor='sort'>개추순으로 정렬</label>
                 </div>
             );
         }
 
         function Cut() {
             function CutHandler(cut) {
+                console.log('cut', cut);
                 let url = '';
                 url += `/info2?page=1&id=${id}&nickname=${nickname}`
-
-                //개추 순 필터가 있다면>
-                if (tempOrder) {
-                    url += '&order=true';
+                if (tempSort) {
+                    url += '&sort=true';
                 }
-                //개추 컷이 있다면
                 if (cut > 0) {
                     url += `&cut=${cut}`;
                 }
                 navigate(url);
             }
-            function optionLoop() {
-                const newArr = [];
-                for (let i = 1; i < 1000; i++) {
-                    let z = Math.floor( (i - 1) / 50 ) * 50;
-                    newArr.push(
-                        <option key={i}>{i}, {z}</option>
-                    )
-                }
-                return newArr;
-            }
             return (
                 <div>
-                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)}>
-                        {optionLoop()}
+                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)} value={tempCut}>
+                        <option value>추컷</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                        <option value={250}>250</option>
+                        <option value={500}>500</option>
+                        <option value={1000}>1000</option>
                     </select>
                     <label htmlFor='cut'>개추컷</label>
                 </div>
@@ -163,7 +148,7 @@ function Info2() {
 
         return (
             <div>
-                <Order checked={tempOrder} />
+                <Sort checked={tempSort} />
                 <Cut />
                 <table>
                     <thead>
@@ -178,7 +163,7 @@ function Info2() {
                     </tbody>
                 </table>
                 <div>
-                    {common.paging(page, perPage, count, 9, pageHandler)}
+                    {common.paging(page, perPage, count, 5, pageHandler)}
                 </div>
             </div>
         );
