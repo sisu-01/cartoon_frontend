@@ -33,7 +33,7 @@ function Info() {
             tempCut.current = searchParams.get('cut') || false;
             getInfo();
         }, [searchParams]);
-        
+
         async function getInfo() {
             let url = '';
             url += `http://localhost:4000`;
@@ -135,9 +135,11 @@ function Info() {
         }
 
         return (
-            <div>
-                <Sort checked={tempSort.current} />
-                <Cut />
+            <div className='Test'>
+                <div>
+                    <Sort checked={tempSort.current} />
+                    <Cut />
+                </div>
                 <table>
                     <thead>
                         <tr>
@@ -159,11 +161,13 @@ function Info() {
 
     return (
         <div className='Info'>
-            Info<br/>
-            {id==='a'?'유동':`아이디: ${id}`}<br/>
-            닉네임: {nickname}
-            <hr/>
-            <button>{result}</button>
+            <div>
+                Info<br/>
+                {id==='a'?'유동':`아이디: ${id}`}<br/>
+                닉네임: {nickname}
+                <hr/>
+                <button>{result}</button>
+            </div>
             <Test />
         </div>
     );
