@@ -14,12 +14,11 @@ function Info() {
 
         //url 파라미터들
         const [searchParams] = useSearchParams();
-        const tempPage = useRef(Number(searchParams.get('page')) || 1);
+        const page = useRef(Number(searchParams.get('page')) || 1);
         const tempSort = useRef(searchParams.get('sort') === 'true' || false);
         const tempCut = useRef(searchParams.get('cut') || false);
 
         //페이징에 필요한 정보들
-        const [page, setPage] = useState();
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
@@ -29,7 +28,7 @@ function Info() {
         async function getInfo() {
             let url = '';
             url += `http://localhost:4000/info`;
-            url += `?page=${tempPage.current}&id=${id}&nickname=${nickname}`;
+            url += `?page=${page.current}&id=${id}&nickname=${nickname}`;
             if (tempSort.current) {
                 url += '&sort=true';
             }
@@ -42,7 +41,6 @@ function Info() {
             .then(data => {
                 if(data['ok']){
                     setCartoonList(data['list']);
-                    setPage(data['page']);
                     setPerPage(data['perPage']);
                     setCount(data['count']);
                 }else{
@@ -56,7 +54,7 @@ function Info() {
         }
     
         useEffect(() => { 
-            tempPage.current = Number(searchParams.get('page')) || 1;
+            page.current = Number(searchParams.get('page')) || 1;
             tempSort.current = searchParams.get('sort') === 'true' || false;
             tempCut.current = searchParams.get('cut') || false;
             getInfo();
@@ -167,7 +165,7 @@ function Info() {
                     </tbody>
                 </table>
                 <div>
-                    {common.paging(page, perPage, count, 5, pageHandler)}
+                    {common.paging(page.current, perPage, count, 5, pageHandler)}
                 </div>
             </div>
         );
