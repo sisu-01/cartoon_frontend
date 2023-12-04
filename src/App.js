@@ -5,7 +5,6 @@ import Home from './routes/Home';
 import Cartoon from './routes/Cartoon';
 import Writer from './routes/Writer';
 import Info from './routes/Info';
-import Info2 from './routes/Info2';
 
 
 function App() {
@@ -15,7 +14,6 @@ function App() {
             <Route path='/cartoon' element={<Cartoon />} />
             <Route path='/writer' element={<Writer />} />
             <Route path='/info' element={<Info />} />
-            <Route path='/info2' element={<Info2 />} />
         </Routes>
     );
 }
