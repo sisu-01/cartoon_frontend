@@ -14,6 +14,8 @@ function Info() {
 
         //url 파라미터들
         const [searchParams] = useSearchParams();
+        //수정 useRef 필요하냐? 아닌것 같은데..
+        //그냥 Test가 2번 랜더링 되는걸 막으면 useRef 필요없이 그냥 const 박아도 된잖아.
         const page = useRef(Number(searchParams.get('page')) || 1);
         const tempSort = useRef(searchParams.get('sort') === 'true' || false);
         const tempCut = useRef(searchParams.get('cut') || false);
@@ -24,11 +26,18 @@ function Info() {
         const [count, setCount] = useState();
 
         const navigate = useNavigate();
-
+    
+        useEffect(() => { 
+            page.current = Number(searchParams.get('page')) || 1;
+            tempSort.current = searchParams.get('sort') === 'true' || false;
+            tempCut.current = searchParams.get('cut') || false;
+            getInfo();
+        }, [searchParams]);
+        
         async function getInfo() {
             let url = '';
-            url += `http://localhost:4000/info`;
-            url += `?page=${page.current}&id=${id}&nickname=${nickname}`;
+            url += `http://localhost:4000`;
+            url += `/info?page=${page.current}&id=${id}&nickname=${nickname}`;
             if (tempSort.current) {
                 url += '&sort=true';
             }
@@ -52,13 +61,6 @@ function Info() {
                 alert(err);
             });
         }
-    
-        useEffect(() => { 
-            page.current = Number(searchParams.get('page')) || 1;
-            tempSort.current = searchParams.get('sort') === 'true' || false;
-            tempCut.current = searchParams.get('cut') || false;
-            getInfo();
-        }, [searchParams]);
     
         function renderCartoonList() {
             console.log('renderCartoonList');
@@ -84,33 +86,26 @@ function Info() {
                 );
             }
         }
-    
-        function pageHandler(e) {
-            console.log('pageHandler-------------------------------');
-            const page = e.target.value;
-
+        function getUrl(p = 1) {
             let url = '';
-            url += `/info?page=${page}&id=${id}&nickname=${nickname}`
+            url += `/info?page=${p}&id=${id}&nickname=${nickname}`
             if (tempSort.current) {
                 url += '&sort=true';
             }
             if (tempCut.current) {
                 url += `&cut=${tempCut.current}`;
             }
-            navigate(url);
+            return url;
+        }
+        function pageHandler(e) {
+            console.log('pageHandler-------------------------------');
+            page.current = e.target.value;
+            navigate(getUrl(page.current));
         };
-
         function Sort(props) {
             function SortHandler(checked) {
-                let url = '';
-                url += `/info?page=1&id=${id}&nickname=${nickname}`
-                if (checked) {
-                    url += '&sort=true';
-                }
-                if (tempCut.current) {
-                    url += `&cut=${tempCut.current}`;
-                }
-                navigate(url);
+                tempSort.current = checked;
+                navigate(getUrl());
             }
             return (
                 <div>
@@ -119,19 +114,10 @@ function Info() {
                 </div>
             );
         }
-
         function Cut() {
             function CutHandler(cut) {
-                console.log('cut', cut);
-                let url = '';
-                url += `/info?page=1&id=${id}&nickname=${nickname}`
-                if (tempSort.current) {
-                    url += '&sort=true';
-                }
-                if (cut > 0) {
-                    url += `&cut=${cut}`;
-                }
-                navigate(url);
+                tempCut.current = cut;
+                navigate(getUrl());
             }
             return (
                 <div>
