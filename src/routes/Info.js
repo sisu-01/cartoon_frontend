@@ -9,13 +9,13 @@ function Info() {
     const nickname = initParam.get('nickname');
     const prev = localStorage.getItem('prev');
 
-    function Test() {
-        console.log('##Test');
+    function List() {
+        console.log('##List');
 
         //url 파라미터들
         const [searchParams] = useSearchParams();
         //수정 useRef 필요하냐? 아닌것 같은데..
-        //그냥 Test가 2번 랜더링 되는걸 막으면 useRef 필요없이 그냥 const 박아도 된잖아.
+        //그냥 List가 2번 랜더링 되는걸 막으면 useRef 필요없이 그냥 const 박아도 된잖아.
         const page = useRef(Number(searchParams.get('page')) || 1);
         const tempSort = useRef(searchParams.get('sort') === 'true' || false);
         const tempCut = useRef(searchParams.get('cut') || false);
@@ -135,7 +135,7 @@ function Info() {
         }
 
         return (
-            <div className='Test'>
+            <div className='List'>
                 <div>
                     <Sort checked={tempSort.current} />
                     <Cut />
@@ -168,7 +168,7 @@ function Info() {
                 <hr/>
                 <Link to={`/cartoon${prev}`}>/cartoon{prev}</Link>
             </div>
-            <Test />
+            <List />
         </div>
     );
 }
