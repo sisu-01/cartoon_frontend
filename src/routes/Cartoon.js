@@ -26,8 +26,9 @@ function Cartoon() {
 
     //네비게이터에 쓸 url 제조기
     function getUrl(p=1) {
+        tempPage.current = Number(p);
         let url = '';
-        url += `/cartoon?page=${p}`
+        url += `/cartoon?page=${tempPage.current}`
         if (tempSort.current) {
             url += '&sort=true';
         }
@@ -115,9 +116,8 @@ function Cartoon() {
     //페이징 버튼에 들어갈 함수
     function pageHandler(e) {
         console.log('pageHandler-------------------------------');
-        tempPage.current = Number(e.target.value);
 
-        navigate(getUrl(tempPage.current));
+        navigate(getUrl(e.target.value));
     };
 
     //개추순으로 정렬 컴포넌트

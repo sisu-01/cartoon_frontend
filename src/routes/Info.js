@@ -32,8 +32,9 @@ function Info() {
 
         //네비게이터에 쓸 url 제조기
         function getUrl(p=1) {
+            tempPage.current = Number(p);
             let url = '';
-            url += `/info?page=${p}&id=${id}&nickname=${nickname}`
+            url += `/info?page=${tempPage.current}&id=${id}&nickname=${nickname}`
             if (tempSort.current) {
                 url += '&sort=true';
             }
@@ -116,9 +117,8 @@ function Info() {
         //페이징 버튼에 들어갈 함수
         function pageHandler(e) {
             console.log('pageHandler-------------------------------');
-            tempPage.current = Number(e.target.value);
 
-            navigate(getUrl(tempPage.current));
+            navigate(getUrl(e.target.value));
         };
 
         //개추순으로 정렬 컴포넌트
