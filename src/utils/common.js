@@ -25,7 +25,7 @@ export function dateFormat(date){
  * @param fnc       Function 클릭 핸들러
  */
 export function paging(page, perPage, count, pageBtn, fnc) {
-    console.log('paging page', page);
+    console.log('paging');
     const pageGroup = Math.ceil(page / pageBtn);//현재 그룹
     const totalPage = Math.ceil(count / perPage);//전체 페이지 개수
     const totalGroup = Math.ceil(totalPage / pageBtn);//전체 그룹 개수
