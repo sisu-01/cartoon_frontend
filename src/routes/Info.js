@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import * as common from '../util/common';
 
 function Info() {
@@ -13,33 +13,44 @@ function Info() {
         console.log('##List');
 
         //url 파라미터들
-        const [searchParams] = useSearchParams();
-        const page = Number(searchParams.get('page')) || 1;
-        const tempSort = searchParams.get('sort') === 'true' || false;
-        const tempCut = searchParams.get('cut') || false;
+        const searchParams = new URLSearchParams(window.location.search);
+        const tempPage = useRef(Number(searchParams.get('page')) || 1);
+        const tempSort = useRef(searchParams.get('sort') === 'true' || false);
+        const tempCut = useRef(searchParams.get('cut') || false);
 
         //페이징에 필요한 정보들
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
 
-        const navigate = useNavigate();
-    
+        //const navigate = useNavigate();
+        const navigate = (url) => {
+            window.history.pushState(null, null, url);
+            getInfo();
+        }
+        window.onpopstate = () => {
+            const popParams = new URLSearchParams(window.location.search);
+            tempPage.current = Number(popParams.get('page')) || 1;
+            tempSort.current = popParams.get('sort') === 'true' || false;
+            tempCut.current = popParams.get('cut') || false;
+            getInfo();
+        }
+
         useEffect(() => { 
             getInfo();
-        }, [searchParams]);
+        }, []);
 
         async function getInfo() {
             let url = '';
             url += `http://localhost:4000`;
-            url += `/info?page=${page}&id=${id}&nickname=${nickname}`;
-            if (tempSort) {
+            url += `/info?page=${tempPage.current}&id=${id}&nickname=${nickname}`;
+            if (tempSort.current) {
                 url += '&sort=true';
             }
-            if (tempCut) {
-                url += `&cut=${tempCut}`;
+            if (tempCut.current) {
+                url += `&cut=${tempCut.current}`;
             }
-            console.log(url);
+            console.log('getInfo:', url);
             fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -81,25 +92,27 @@ function Info() {
                 );
             }
         }
-        function getUrl({ p = 1, s = tempSort, c = tempCut}) {
+        function getUrl(p=1) {
             let url = '';
             url += `/info?page=${p}&id=${id}&nickname=${nickname}`
-            if (s) {
+            if (tempSort.current) {
                 url += '&sort=true';
             }
-            if (c > 0) {
-                console.log('c의 침입니다!@#', c);
-                url += `&cut=${c}`;
+            if (tempCut.current > 0) {
+                url += `&cut=${tempCut.current}`;
             }
             return url;
         }
         function pageHandler(e) {
             console.log('pageHandler-------------------------------');
-            navigate(getUrl({p: e.target.value}));
+            tempPage.current = e.target.value;
+
+            navigate(getUrl(tempPage.current));
         };
         function Sort(props) {
             function SortHandler(checked) {
-                navigate(getUrl({s: checked}));
+                tempSort.current = checked;
+                navigate(getUrl());
             }
             return (
                 <div>
@@ -110,11 +123,12 @@ function Info() {
         }
         function Cut() {
             function CutHandler(cut) {
-                navigate(getUrl({c: cut}));
+                tempCut.current = cut;
+                navigate(getUrl());
             }
             return (
                 <div>
-                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)} value={tempCut}>
+                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)} value={tempCut.current}>
                         <option value>추컷</option>
                         <option value={50}>50</option>
                         <option value={100}>100</option>
@@ -130,7 +144,7 @@ function Info() {
         return (
             <div className='List'>
                 <div>
-                    <Sort checked={tempSort} />
+                    <Sort checked={tempSort.current} />
                     <Cut />
                 </div>
                 <table>
@@ -146,7 +160,7 @@ function Info() {
                     </tbody>
                 </table>
                 <div>
-                    {common.paging(page, perPage, count, 5, pageHandler)}
+                    {common.paging(tempPage.current, perPage, count, 5, pageHandler)}
                 </div>
             </div>
         );
