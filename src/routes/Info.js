@@ -3,14 +3,15 @@ import { Link } from 'react-router-dom';
 import * as common from '../util/common';
 
 function Info() {
-    console.log('######################한 번만');
+    console.log('########최초 한 번만 렌더 Info');
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
     const nickname = initParam.get('nickname');
     const prev = localStorage.getItem('prev');
 
+    //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
-        console.log('##List');
+        console.log('###List');
 
         //url 파라미터들
         const searchParams = new URLSearchParams(window.location.search);
@@ -23,11 +24,31 @@ function Info() {
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
 
-        //const navigate = useNavigate();
-        const navigate = (url) => {
+        //최초 실행
+        useEffect(() => { 
+            getInfo();
+        }, []);
+
+        //네비게이터에 쓸 url 제조기
+        function getUrl(p=1) {
+            let url = '';
+            url += `/info?page=${p}&id=${id}&nickname=${nickname}`
+            if (tempSort.current) {
+                url += '&sort=true';
+            }
+            if (tempCut.current > 0) {
+                url += `&cut=${tempCut.current}`;
+            }
+            return url;
+        }
+
+        //나만의 네비게이터
+        function navigate(url) {
             window.history.pushState(null, null, url);
             getInfo();
         }
+
+        //브라우저 뒤로가기, 앞으로가기 감지
         window.onpopstate = () => {
             const popParams = new URLSearchParams(window.location.search);
             tempPage.current = Number(popParams.get('page')) || 1;
@@ -36,11 +57,8 @@ function Info() {
             getInfo();
         }
 
-        useEffect(() => { 
-            getInfo();
-        }, []);
-
-        async function getInfo() {
+        //목록 가져오는 api
+        function getInfo() {
             let url = '';
             url += `http://localhost:4000`;
             url += `/info?page=${tempPage.current}&id=${id}&nickname=${nickname}`;
@@ -67,7 +85,8 @@ function Info() {
                 alert(err);
             });
         }
-    
+
+        //만화 목록 렌더링
         function renderCartoonList() {
             console.log('renderCartoonList');
             const newArr = [];
@@ -92,23 +111,16 @@ function Info() {
                 );
             }
         }
-        function getUrl(p=1) {
-            let url = '';
-            url += `/info?page=${p}&id=${id}&nickname=${nickname}`
-            if (tempSort.current) {
-                url += '&sort=true';
-            }
-            if (tempCut.current > 0) {
-                url += `&cut=${tempCut.current}`;
-            }
-            return url;
-        }
+
+        //페이징 버튼에 들어갈 함수
         function pageHandler(e) {
             console.log('pageHandler-------------------------------');
             tempPage.current = e.target.value;
 
             navigate(getUrl(tempPage.current));
         };
+
+        //개추순으로 정렬 컴포넌트
         function Sort(props) {
             function SortHandler(checked) {
                 tempSort.current = checked;
@@ -121,6 +133,8 @@ function Info() {
                 </div>
             );
         }
+
+        //개추 최소 컷 컴포넌트
         function Cut() {
             function CutHandler(cut) {
                 tempCut.current = cut;
