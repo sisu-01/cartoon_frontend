@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import * as common from '../util/common';
+import * as common from '../utils/common';
 
 function Info() {
     console.log('########최초 한 번만 렌더 Info');

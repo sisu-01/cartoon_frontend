@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import * as common from '../util/common';
+import * as common from '../utils/common';
 
 function Cartoon() {
     const [page, setPage] = useState();
