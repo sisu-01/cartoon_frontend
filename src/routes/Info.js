@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as common from '../utils/common';
+import API_SERVER from '../utils/api';
 
 function Info() {
     console.log('########최초 한 번만 렌더 Info');
@@ -60,7 +61,7 @@ function Info() {
         //목록 가져오는 api
         function getInfo() {
             let url = '';
-            url += `http://localhost:4000`;
+            url += API_SERVER;
             url += `/info?page=${tempPage.current}&id=${id}&nickname=${nickname}`;
             if (tempSort.current) {
                 url += '&sort=true';
