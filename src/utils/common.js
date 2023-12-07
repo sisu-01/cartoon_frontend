@@ -17,8 +17,15 @@ export function dateFormat(date){
     return [year, month, day].join('.')+' ('+days[d.getDay()]+'요일)';
 }
 
+/**
+ * @param page      Number 현재 페이지
+ * @param perPage   Number 페이지 크기
+ * @param count     Number 전체 페이지 개수
+ * @param pageBtn   Number 표시할 버튼 개수
+ * @param fnc       Function 클릭 핸들러
+ */
 export function paging(page, perPage, count, pageBtn, fnc) {
-    console.log('paging');
+    console.log('paging page', page);
     const pageGroup = Math.ceil(page / pageBtn);//현재 그룹
     const totalPage = Math.ceil(count / perPage);//전체 페이지 개수
     const totalGroup = Math.ceil(totalPage / pageBtn);//전체 그룹 개수

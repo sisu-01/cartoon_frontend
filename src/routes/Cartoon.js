@@ -115,7 +115,7 @@ function Cartoon() {
     //페이징 버튼에 들어갈 함수
     function pageHandler(e) {
         console.log('pageHandler-------------------------------');
-        tempPage.current = e.target.value;
+        tempPage.current = Number(e.target.value);
 
         navigate(getUrl(tempPage.current));
     };
