@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as common from '../util/common';
 
@@ -14,11 +14,9 @@ function Info() {
 
         //url 파라미터들
         const [searchParams] = useSearchParams();
-        //수정 useRef 필요하냐? 아닌것 같은데..
-        //그냥 List가 2번 랜더링 되는걸 막으면 useRef 필요없이 그냥 const 박아도 된잖아.
-        const page = useRef(Number(searchParams.get('page')) || 1);
-        const tempSort = useRef(searchParams.get('sort') === 'true' || false);
-        const tempCut = useRef(searchParams.get('cut') || false);
+        const page = Number(searchParams.get('page')) || 1;
+        const tempSort = searchParams.get('sort') === 'true' || false;
+        const tempCut = searchParams.get('cut') || false;
 
         //페이징에 필요한 정보들
         const [cartoonList, setCartoonList] = useState();
@@ -28,21 +26,18 @@ function Info() {
         const navigate = useNavigate();
     
         useEffect(() => { 
-            page.current = Number(searchParams.get('page')) || 1;
-            tempSort.current = searchParams.get('sort') === 'true' || false;
-            tempCut.current = searchParams.get('cut') || false;
             getInfo();
         }, [searchParams]);
 
         async function getInfo() {
             let url = '';
             url += `http://localhost:4000`;
-            url += `/info?page=${page.current}&id=${id}&nickname=${nickname}`;
-            if (tempSort.current) {
+            url += `/info?page=${page}&id=${id}&nickname=${nickname}`;
+            if (tempSort) {
                 url += '&sort=true';
             }
-            if (tempCut.current) {
-                url += `&cut=${tempCut.current}`;
+            if (tempCut) {
+                url += `&cut=${tempCut}`;
             }
             console.log(url);
             fetch(url)
@@ -86,26 +81,25 @@ function Info() {
                 );
             }
         }
-        function getUrl(p = 1) {
+        function getUrl({ p = 1, s = tempSort, c = tempCut}) {
             let url = '';
             url += `/info?page=${p}&id=${id}&nickname=${nickname}`
-            if (tempSort.current) {
+            if (s) {
                 url += '&sort=true';
             }
-            if (tempCut.current) {
-                url += `&cut=${tempCut.current}`;
+            if (c > 0) {
+                console.log('c의 침입니다!@#', c);
+                url += `&cut=${c}`;
             }
             return url;
         }
         function pageHandler(e) {
             console.log('pageHandler-------------------------------');
-            page.current = e.target.value;
-            navigate(getUrl(page.current));
+            navigate(getUrl({p: e.target.value}));
         };
         function Sort(props) {
             function SortHandler(checked) {
-                tempSort.current = checked;
-                navigate(getUrl());
+                navigate(getUrl({s: checked}));
             }
             return (
                 <div>
@@ -116,12 +110,11 @@ function Info() {
         }
         function Cut() {
             function CutHandler(cut) {
-                tempCut.current = cut;
-                navigate(getUrl());
+                navigate(getUrl({c: cut}));
             }
             return (
                 <div>
-                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)} value={tempCut.current}>
+                    <select id='cut' onChange={({target: {value}}) => CutHandler(value)} value={tempCut}>
                         <option value>추컷</option>
                         <option value={50}>50</option>
                         <option value={100}>100</option>
@@ -137,7 +130,7 @@ function Info() {
         return (
             <div className='List'>
                 <div>
-                    <Sort checked={tempSort.current} />
+                    <Sort checked={tempSort} />
                     <Cut />
                 </div>
                 <table>
@@ -153,7 +146,7 @@ function Info() {
                     </tbody>
                 </table>
                 <div>
-                    {common.paging(page.current, perPage, count, 5, pageHandler)}
+                    {common.paging(page, perPage, count, 5, pageHandler)}
                 </div>
             </div>
         );
