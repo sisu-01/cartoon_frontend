@@ -1,5 +1,10 @@
 import React, { useEffect, useRef,useState } from 'react';
 import { Link } from 'react-router-dom';
+
+import Sort from '../components/Sort';
+import Cut from '../components/Cut';
+import Paging from '../components/Paging';
+
 import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
@@ -113,53 +118,29 @@ function Cartoon() {
         }
     }
 
-    //페이징 버튼에 들어갈 함수
+    //페이징 버튼 핸들러
     function pageHandler(e) {
         console.log('pageHandler-------------------------------');
-
         navigate(getUrl(e.target.value));
     };
 
-    //개추순으로 정렬 컴포넌트
-    function Sort(props) {
-        function SortHandler(checked) {
-            tempSort.current = checked;
-            navigate(getUrl());
-        }
-        return (
-            <div>
-                <input type='checkbox' id='sort' checked={props.checked} onChange={({ target: { checked } }) => SortHandler(checked)} />
-                <label htmlFor='sort'>개추순으로 정렬</label>
-            </div>
-        );
+    //개추 정렬 핸들러
+    function SortHandler(checked) {
+        tempSort.current = checked;
+        navigate(getUrl());
     }
 
-    //개추 최소 컷 컴포넌트
-    function Cut() {
-        function CutHandler(cut) {
-            tempCut.current = cut;
-            navigate(getUrl());
-        }
-        return (
-            <div>
-                <select id='cut' onChange={({target: {value}}) => CutHandler(value)} value={tempCut.current}>
-                    <option value>추컷</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                    <option value={250}>250</option>
-                    <option value={500}>500</option>
-                    <option value={1000}>1000</option>
-                </select>
-                <label htmlFor='cut'>개추컷</label>
-            </div>
-        );
+    //개추 최소 컷 핸들러
+    function CutHandler(cut) {
+        tempCut.current = cut;
+        navigate(getUrl());
     }
 
     return (
         <div className='Cartoon'>
             <div>
-                <Sort checked={tempSort.current} />
-                <Cut />
+                <Sort checked={tempSort.current} handler={SortHandler}/>
+                <Cut value={tempCut.current} handler={CutHandler}/>
             </div>
             <table>
                 <thead>
@@ -175,7 +156,7 @@ function Cartoon() {
                 </tbody>
             </table>
             <div>
-                {common.paging(tempPage.current, perPage, count, 10, pageHandler)}
+                <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
             </div>
         </div>
     );
