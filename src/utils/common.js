@@ -39,10 +39,14 @@ export function navigate(url, callback) {
  * @param {useRef} cut 개추컷
  * @param {function} callback 목록 api
  */
-export function popNavigate(page, sort, cut, callback) {
+export function popNavigate({page = 1,sort = false,cut = false,callback = null}) {
     const popParams = new URLSearchParams(window.location.search);
     page.current = Number(popParams.get('page')) || 1;
-    sort.current = popParams.get('sort') === 'true' || false;
-    cut.current = popParams.get('cut') || false;
+    if (sort) {
+        sort.current = popParams.get('sort') === 'true' || false;
+    }
+    if (cut) {
+        cut.current = popParams.get('cut') || false;
+    }
     callback();
 }

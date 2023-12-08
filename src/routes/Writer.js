@@ -39,7 +39,10 @@ function Writer() {
     
     //브라우저 뒤로가기, 앞으로가기 감지
     window.onpopstate = () => {
-        common.popNavigate(tempPage, getWriter);
+        common.popNavigate({
+            page: tempPage,
+            callback: getWriter,
+        });
     };
     
     //목록 가져오는 api
