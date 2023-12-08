@@ -13,7 +13,7 @@ function Info() {
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
     const nickname = initParam.get('nickname');
-    const prev = localStorage.getItem('prev');
+    const prev = localStorage.getItem('prev') || false;
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
@@ -163,7 +163,7 @@ function Info() {
                 {id==='a'?'유동':`아이디: ${id}`}<br/>
                 닉네임: {nickname}
                 <hr/>
-                <Link to={`/cartoon${prev}`}>/cartoon{prev}</Link>
+                {prev? <Link to={`${prev}`}>목록으로 돌아가기</Link>: ''}
             </div>
             <List />
         </div>

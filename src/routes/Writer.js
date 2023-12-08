@@ -17,7 +17,8 @@ function Writer() {
     const [count, setCount] = useState();
 
     //이전 페이지 버튼을 위한 주소 저장
-    localStorage.setItem('prev', window.location.search);
+    const location = window.location;
+    localStorage.setItem('prev', location.pathname+location.search);
 
     useEffect(() => {
         getWriter();
