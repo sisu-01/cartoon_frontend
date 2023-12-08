@@ -92,7 +92,7 @@ function Cartoon() {
                 const date = common.dateFormat(i['date']);
                 newArr.push(
                     <tr key={key}>
-                        <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='blank'>{i['title']}</a></td>
+                        <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>{i['title']}</a></td>
                         <td>
                             <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>
                                 {i['writer_nickname']}
