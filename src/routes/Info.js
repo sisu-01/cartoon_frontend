@@ -49,12 +49,6 @@ function Info() {
             return url;
         }
 
-        //나만의 네비게이터
-        function navigate(url) {
-            window.history.pushState(null, null, url);
-            getInfo();
-        }
-
         //브라우저 뒤로가기, 앞으로가기 감지
         window.onpopstate = () => {
             const popParams = new URLSearchParams(window.location.search);
@@ -121,20 +115,19 @@ function Info() {
 
         //페이징 버튼 핸들러
         function pageHandler(e) {
-            console.log('pageHandler-------------------------------');
-            navigate(getUrl(e.target.value));
+            common.navigate(getUrl(e.target.value), getInfo());
         };
 
         //개추 정렬 핸들러
         function SortHandler(checked) {
             tempSort.current = checked;
-            navigate(getUrl());
+            common.navigate(getUrl(), getInfo());
         }
 
         //개추 최소 컷 핸들러
         function CutHandler(cut) {
             tempCut.current = cut;
-            navigate(getUrl());
+            common.navigate(getUrl(), getInfo());
         }
 
         return (
