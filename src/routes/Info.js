@@ -51,12 +51,8 @@ function Info() {
 
         //브라우저 뒤로가기, 앞으로가기 감지
         window.onpopstate = () => {
-            const popParams = new URLSearchParams(window.location.search);
-            tempPage.current = Number(popParams.get('page')) || 1;
-            tempSort.current = popParams.get('sort') === 'true' || false;
-            tempCut.current = popParams.get('cut') || false;
-            getInfo();
-        }
+            common.popNavigate(tempPage, tempSort, tempCut, getInfo);
+        };
 
         //목록 가져오는 api
         function getInfo() {
@@ -115,19 +111,19 @@ function Info() {
 
         //페이징 버튼 핸들러
         function pageHandler(e) {
-            common.navigate(getUrl(e.target.value), getInfo());
+            common.navigate(getUrl(e.target.value), getInfo);
         };
 
         //개추 정렬 핸들러
         function SortHandler(checked) {
             tempSort.current = checked;
-            common.navigate(getUrl(), getInfo());
+            common.navigate(getUrl(), getInfo);
         }
 
         //개추 최소 컷 핸들러
         function CutHandler(cut) {
             tempCut.current = cut;
-            common.navigate(getUrl(), getInfo());
+            common.navigate(getUrl(), getInfo);
         }
 
         return (

@@ -31,3 +31,18 @@ export function navigate(url, callback) {
     window.history.pushState(null, null, url);
     callback();
 }
+
+/**
+ * 
+ * @param {useRef} page 페이지
+ * @param {useRef} sort 개추순
+ * @param {useRef} cut 개추컷
+ * @param {function} callback 목록 api
+ */
+export function popNavigate(page, sort, cut, callback) {
+    const popParams = new URLSearchParams(window.location.search);
+    page.current = Number(popParams.get('page')) || 1;
+    sort.current = popParams.get('sort') === 'true' || false;
+    cut.current = popParams.get('cut') || false;
+    callback();
+}
