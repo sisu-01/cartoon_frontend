@@ -119,10 +119,6 @@ function Writer() {
                 </tbody>
             </table>
             <div>
-                tempPage: {tempPage.current}<br/>
-                perPage: {perPage}<br/>
-                count: {count}<br/>
-                pageBtn: {10}<br/>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
             </div>
         </div>
