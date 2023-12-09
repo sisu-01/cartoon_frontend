@@ -76,9 +76,10 @@ function Writer() {
         if (writerList) {
             for(const key in writerList) {
                 const i = writerList[key];
+                const id = i['writer_id'] === 'a'? '유동': i['writer_id'];
                 newArr.push(
                     <tr key={key}>
-                        <td>{i['writer_id']}</td>
+                        <td>{id}</td>
                         <td>
                             <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>
                                 {i['writer_nickname']}
