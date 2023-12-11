@@ -14,7 +14,7 @@ function Writer() {
     const sortList = [
         {'id': 1, 'label': '작가이름'},
         {'id': 2, 'label': '개추평균'},
-        {'id': 3, 'label': '데뷔일'},
+        {'id': 3, 'label': '날짜'},
         {'id': 4, 'label': '작품개수'}
     ]
 
@@ -149,7 +149,7 @@ function Writer() {
                     <tr>
                         <th>id</th>
                         <th>nickname</th>
-                        <th>date</th>
+                        <th>first rec</th>
                         <th>count</th>
                         <th>average</th>
                     </tr>
