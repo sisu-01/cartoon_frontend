@@ -47,10 +47,10 @@ function Writer() {
     
     //브라우저 뒤로가기, 앞으로가기 감지
     window.onpopstate = () => {
-        common.popNavigate({
-            page: tempPage,
-            callback: getWriter,
-        });
+        const popParams = new URLSearchParams(window.location.search);
+        tempPage.current = Number(popParams.get('page')) || 1;
+        tempSort.current = Number(popParams.get('sort')) || 1;
+        getWriter();
     };
     
     //목록 가져오는 api
