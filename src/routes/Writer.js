@@ -10,6 +10,13 @@ function Writer() {
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
+    const tempSort = useRef(Number(searchParams.get('sort')) || 1);
+    const sortList = [
+        {'id': 1, 'label': '작가이름'},
+        {'id': 2, 'label': '개추평균'},
+        {'id': 3, 'label': '데뷔일'},
+        {'id': 4, 'label': '작품개수'}
+    ]
 
     //페이징에 필요한 정보들
     const [writerList, setWriterList] = useState();
@@ -29,8 +36,8 @@ function Writer() {
         tempPage.current = Number(p);
         let url = '';
         url += `/writer?page=${tempPage.current}`
-        if (false) {
-            url += '&sort=true';
+        if (tempSort.current) {
+            url += `&sort=${tempSort.current}`;
         }
         if (false) {
             url += `&cut=0`;
@@ -51,6 +58,12 @@ function Writer() {
         let url = '';
         url += API_SERVER;
         url += `/writer?page=${tempPage.current}`;
+        if (tempSort.current) {
+            url += `&sort=${tempSort.current}`;
+        }
+        if (false) {
+            url += `&cut=0`;
+        }
         console.log('getWriter:', url);
         fetch(url)
         .then(response => response.json())
@@ -77,6 +90,7 @@ function Writer() {
             for(const key in writerList) {
                 const i = writerList[key];
                 const id = i['writer_id'] === 'a'? '유동': i['writer_id'];
+                const date = common.dateFormat(i['date']);
                 newArr.push(
                     <tr key={key}>
                         <td>{id}</td>
@@ -85,6 +99,7 @@ function Writer() {
                                 {i['writer_nickname']}
                             </Link>
                         </td>
+                        <td>{date}</td>
                         <td>{i['count']}</td>
                         <td>{i['average']}</td>
                     </tr>
@@ -105,13 +120,36 @@ function Writer() {
         common.navigate(getUrl(e.target.value), getWriter);
     };
 
+    //작가 정렬 핸들러
+    function SortHandler(value) {
+        tempSort.current = Number(value) || 1;
+        common.navigate(getUrl(), getWriter);
+    }
+
     return (
         <div className='Writer'>
+            <div>
+                <div>정렬</div>
+                {sortList.map(sort => (
+                    <label key={`sort_${sort.id}`}>
+                        <input
+                            type='radio'
+                            id={sort.id}
+                            name='sort'
+                            value={sort.id}
+                            checked={tempSort.current === sort.id}
+                            onChange={({target: {value}}) => SortHandler(value)}
+                        />
+                        {sort.label}
+                    </label>
+                ))}
+            </div>
             <table>
                 <thead>
                     <tr>
                         <th>id</th>
                         <th>nickname</th>
+                        <th>date</th>
                         <th>count</th>
                         <th>average</th>
                     </tr>
