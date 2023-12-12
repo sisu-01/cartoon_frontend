@@ -6,7 +6,8 @@ function Header() {
         <header>
             <Link to="/">home</Link>&nbsp;&nbsp;|&nbsp;&nbsp;
             <Link to="/cartoon">cartoon</Link>&nbsp;&nbsp;|&nbsp;&nbsp;
-            <Link to="/writer">writer</Link>
+            <Link to="/writer">writer</Link>&nbsp;&nbsp;|&nbsp;&nbsp;
+            <Link to="/series">series ( 시험적 기능 )</Link>
             <hr/>
         </header>
     );
