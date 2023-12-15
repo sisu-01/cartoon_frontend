@@ -89,14 +89,14 @@ function Writer() {
         if (writerList) {
             for(const key in writerList) {
                 const i = writerList[key];
-                const id = i['writer_id'] === 'a'? '유동': i['writer_id'];
+                const id = i['id'] === 'a'? '유동': i['id'];
                 const date = common.dateFormat(i['date']);
                 newArr.push(
                     <tr key={key}>
                         <td>{id}</td>
                         <td>
-                            <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>
-                                {i['writer_nickname']}
+                            <Link to={`/info?id=${i['id']}&nickname=${i['nickname']}`}>
+                                {i['nickname']}
                             </Link>
                         </td>
                         <td>{date}</td>
