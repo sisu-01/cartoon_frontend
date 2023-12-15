@@ -13,10 +13,10 @@ function Writer() {
     const tempSort = useRef(Number(searchParams.get('sort')) || 1);
     const sortList = [
         {'id': 1, 'label': '작가이름'},
-        {'id': 2, 'label': '개추평균'},
-        {'id': 3, 'label': '날짜'},
-        {'id': 4, 'label': '작품개수'},
-        {'id': 5, 'label': '누적개추'}
+        {'id': 2, 'label': '날짜'},
+        {'id': 3, 'label': '작품개수'},
+        {'id': 4, 'label': '누적개추'},
+        {'id': 5, 'label': '개추평균'}
     ]
 
     //페이징에 필요한 정보들
