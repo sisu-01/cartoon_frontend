@@ -15,7 +15,8 @@ function Writer() {
         {'id': 1, 'label': '작가이름'},
         {'id': 2, 'label': '개추평균'},
         {'id': 3, 'label': '날짜'},
-        {'id': 4, 'label': '작품개수'}
+        {'id': 4, 'label': '작품개수'},
+        {'id': 5, 'label': '누적개추'}
     ]
 
     //페이징에 필요한 정보들
@@ -101,6 +102,7 @@ function Writer() {
                         </td>
                         <td>{date}</td>
                         <td>{i['count']}</td>
+                        <td>{i['recommend']}</td>
                         <td>{i['average']}</td>
                     </tr>
                 );
@@ -151,6 +153,7 @@ function Writer() {
                         <th>nickname</th>
                         <th>first rec</th>
                         <th>count</th>
+                        <th>recommend</th>
                         <th>average</th>
                     </tr>
                 </thead>
