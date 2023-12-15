@@ -12,11 +12,11 @@ function Writer() {
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
     const tempSort = useRef(Number(searchParams.get('sort')) || 1);
     const sortList = [
-        {'id': 1, 'label': '작가이름'},
-        {'id': 2, 'label': '날짜'},
-        {'id': 3, 'label': '작품개수'},
-        {'id': 4, 'label': '누적개추'},
-        {'id': 5, 'label': '개추평균'}
+        {'id': 1, 'label': 'nickname'},
+        {'id': 2, 'label': 'first rec'},
+        {'id': 3, 'label': 'count'},
+        {'id': 4, 'label': 'recommend'},
+        {'id': 5, 'label': 'average'}
     ]
 
     //페이징에 필요한 정보들
@@ -130,31 +130,23 @@ function Writer() {
 
     return (
         <div className='Writer'>
-            <div>
-                <div>정렬</div>
-                {sortList.map(sort => (
-                    <label key={`sort_${sort.id}`}>
-                        <input
-                            type='radio'
-                            id={sort.id}
-                            name='sort'
-                            value={sort.id}
-                            checked={tempSort.current === sort.id}
-                            onChange={({target: {value}}) => SortHandler(value)}
-                        />
-                        {sort.label}
-                    </label>
-                ))}
-            </div>
             <table>
                 <thead>
                     <tr>
                         <th>id</th>
-                        <th>nickname</th>
-                        <th>first rec</th>
-                        <th>count</th>
-                        <th>recommend</th>
-                        <th>average</th>
+                        {sortList.map(sort => (
+                            <th><label key={`sort_${sort.id}`}>
+                                <input
+                                    type='radio'
+                                    id={sort.id}
+                                    name='sort'
+                                    value={sort.id}
+                                    checked={tempSort.current === sort.id}
+                                    onChange={({target: {value}}) => SortHandler(value)}
+                                />
+                                {sort.label}
+                            </label></th>
+                        ))}
                     </tr>
                 </thead>
                 <tbody>
