@@ -75,7 +75,7 @@ function Series() {
                     <tr key={key}>
                         <td>{i['id']}</td>
                         <td>
-                            <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>
+                            <Link to={`/list?id=${i['id']}`}>
                                 {i['title']}
                             </Link>
                         </td>
