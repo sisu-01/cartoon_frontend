@@ -30,7 +30,7 @@ function Series() {
     function getUrl(p=1) {
         tempPage.current = Number(p);
         let url = '';
-        url += `/seriees?page=${tempPage.current}`
+        url += `/series?page=${tempPage.current}`
         return url;
     }
     
