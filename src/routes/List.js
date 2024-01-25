@@ -126,6 +126,9 @@ function List() {
             <div>
                 List<br/>
                 {id==='a'?'유동':`아이디: ${id}`}<br/>
+                닉네임: 수정<br/>
+                <span>에피소드가 누락돼있나요? 아래에 작가 상세 보기에서 찾아보시던가 구글에 검색 ㄱㄱ</span><br/>
+                <button>작가 상세 보기</button>
                 <hr/>
                 {prev? <Link to={`${prev}`}>목록으로 돌아가기</Link>: ''}
             </div>

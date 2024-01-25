@@ -99,6 +99,9 @@ function Series() {
 
     return (
         <div className='Series'>
+            <div>
+                count순, average순
+            </div>
             <table>
                 <thead>
                     <th>id</th>
