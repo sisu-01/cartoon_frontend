@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import Sort from '../components/Sort';
+import Cut from '../components/Cut';
 import Paging from '../components/Paging';
 
 import * as common from '../utils/common';
@@ -12,6 +14,8 @@ function Series() {
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
+    const tempSort = useRef(searchParams.get('sort') === 'true' || false);
+    const tempCut = useRef(searchParams.get('cut') || false);
 
     //페이징에 필요한 정보들
     const [seriesList, setSeriesList] = useState();
@@ -31,14 +35,23 @@ function Series() {
         tempPage.current = Number(p);
         let url = '';
         url += `/series?page=${tempPage.current}`
+        if (tempSort.current) {
+            url += '&sort=true';
+        }
+        if (tempCut.current > 0) {
+            url += `&cut=${tempCut.current}`;
+        }
         return url;
     }
     
     //브라우저 뒤로가기, 앞으로가기 감지
     window.onpopstate = () => {
-        const popParams = new URLSearchParams(window.location.search);
-        tempPage.current = Number(popParams.get('page')) || 1;
-        //getSeries();
+        common.popNavigate({
+            page: tempPage,
+            sort: tempSort,
+            cut: tempCut,
+            callback: getSeries,
+        });
     };
 
     //목록 가져오는 api
@@ -46,6 +59,12 @@ function Series() {
         let url = '';
         url += API_SERVER;
         url += `/series?page=${tempPage.current}`;
+        if (tempSort.current) {
+            url += '&sort=true';
+        }
+        if (tempCut.current) {
+            url += `&cut=${tempCut.current}`;
+        }
         console.log('getSeries:', url);
         fetch(url)
         .then(response => response.json())
@@ -97,10 +116,23 @@ function Series() {
         common.navigate(getUrl(e.target.value), getSeries);
     };
 
+    //개추 정렬 핸들러
+    function SortHandler(checked) {
+        tempSort.current = checked;
+        common.navigate(getUrl(), getSeries);
+    }
+
+    //개추 최소 컷 핸들러
+    function CutHandler(cut) {
+        tempCut.current = cut;
+        common.navigate(getUrl(), getSeries);
+    }
+
     return (
         <div className='Series'>
             <div>
-                count순, average순
+                <Sort checked={tempSort.current} handler={SortHandler}/>
+                <Cut value={tempCut.current} handler={CutHandler}/>
             </div>
             <table>
                 <thead>
