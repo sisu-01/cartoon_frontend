@@ -10,6 +10,8 @@ function List() {
     console.log('########최초 한 번만 렌더 List');
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
+    const writer_id = initParam.get('wid') || false;
+    const nickname = initParam.get('nickname') || false;
     const prev = localStorage.getItem('prev') || false;
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
@@ -125,12 +127,14 @@ function List() {
         <div className='List'>
             <div>
                 List<br/>
-                {id==='a'?'유동':`아이디: ${id}`}<br/>
-                닉네임: 수정<br/>
-                <span>에피소드가 누락돼있나요? 아래에 작가 상세 보기에서 찾아보시던가 구글에 검색 ㄱㄱ</span><br/>
-                <button>작가 상세 보기</button>
-                <hr/>
-                {prev? <Link to={`${prev}`}>목록으로 돌아가기</Link>: ''}
+                {writer_id && nickname && (
+                    <>
+                        {writer_id==='a'?'유동':`아이디: ${writer_id}`}<br/>
+                        닉네임: {nickname}<br />
+                        <Link to={`/info?id=${writer_id}&nickname=${nickname}`}>작가 상세 보기</Link><br/>
+                    </>
+                )}
+                {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
             </div>
             <List />
         </div>
