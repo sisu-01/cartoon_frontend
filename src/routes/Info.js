@@ -63,7 +63,7 @@ function Info() {
         function getInfo() {
             let url = '';
             url += API_SERVER;
-            url += `/info?page=${tempPage.current}&id=${id}&nickname=${nickname}`;
+            url += `/info?page=${tempPage.current}&id=${id}&nickname=${encodeURIComponent(nickname)}`;
             if (tempSort.current) {
                 url += '&sort=true';
             }
