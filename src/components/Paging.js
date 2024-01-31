@@ -1,3 +1,4 @@
+import Pagination from 'react-bootstrap/Pagination';
 
 /**
  * @param {Number} page 현재 페이지
@@ -20,27 +21,29 @@ function Paging(props) {
 
     const newArr = [];
     if (pageGroup > 1) {
-        newArr.push(<button key='first' onClick={handler} value={1}>&lt;&lt;</button>);
-        newArr.push(<button key='prev' onClick={handler} value={startPage-1}>&lt;</button>);
+        newArr.push(<Pagination.First key='first' onClick={() => handler(1)} />);
+        newArr.push(<Pagination.Prev key='prev' onClick={() => handler(startPage-1)} />);
     } else {
-        newArr.push(<button key='disabled_first' disabled>&lt;&lt;</button>);
-        newArr.push(<button key='disabled_prev' disabled>&lt;</button>);
+        newArr.push(<Pagination.First key='disabled_first' disabled />);
+        newArr.push(<Pagination.Prev key='disabled_prev' disabled />);
     }
     for (let i = startPage; i <= endPage; i++) {
         if (page === i) {
-            newArr.push(<button key={i} disabled>{i}</button>);
+            newArr.push(<Pagination.Item key={i} active>{i}</Pagination.Item>);
         } else {
-            newArr.push(<button key={i} onClick={handler} value={i}>{i}</button>);
+            newArr.push(<Pagination.Item key={i} onClick={() => handler(i)}>{i}</Pagination.Item>);
         }
     }
     if (pageGroup < totalGroup) {
-        newArr.push(<button key='next' onClick={handler} value={endPage+1}>&gt;</button>);
-        newArr.push(<button key='last' onClick={handler} value={totalPage}>&gt;&gt;</button>);
+        newArr.push(<Pagination.Next key='next' onClick={() => handler(endPage+1)} />);
+        newArr.push(<Pagination.Last key='last' onClick={() => handler(totalPage)} />);
     } else {
-        newArr.push(<button key='disabled_next' disabled>&gt;</button>);
-        newArr.push(<button key='disabled_last' disabled>&gt;&gt;</button>);
+        newArr.push(<Pagination.Next key='disabled_next' disabled />);
+        newArr.push(<Pagination.Last key='disabled_last' disabled />);
     }
-    return newArr;
+    return (
+        <Pagination size='sm'>{newArr}</Pagination>
+    );
 }
 
 export default Paging;

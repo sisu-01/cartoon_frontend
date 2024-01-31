@@ -98,8 +98,8 @@ function List() {
         }
 
         //페이징 버튼 핸들러
-        function pageHandler(e) {
-            common.navigate(getUrl(e.target.value), getList);
+        function pageHandler(page) {
+            common.navigate(getUrl(page), getList);
         };
 
         return (

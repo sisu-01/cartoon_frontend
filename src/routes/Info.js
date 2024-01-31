@@ -115,8 +115,8 @@ function Info() {
         }
 
         //페이징 버튼 핸들러
-        function pageHandler(e) {
-            common.navigate(getUrl(e.target.value), getInfo);
+        function pageHandler(page) {
+            common.navigate(getUrl(page), getInfo);
         };
 
         //개추 정렬 핸들러

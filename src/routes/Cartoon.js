@@ -115,8 +115,8 @@ function Cartoon() {
     }
 
     //페이징 버튼 핸들러
-    function pageHandler(e) {
-        common.navigate(getUrl(e.target.value), getCartoon);
+    function pageHandler(page) {
+        common.navigate(getUrl(page), getCartoon);
     };
 
     //개추 정렬 핸들러
