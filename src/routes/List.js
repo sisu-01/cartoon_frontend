@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import Paging from '../components/Paging';
 
 import * as common from '../utils/common';
@@ -75,24 +77,32 @@ function List() {
         function renderCartoonList() {
             console.log('renderCartoonList');
             const newArr = [];
-            if (cartoonList) {
+            if(cartoonList){
                 for(const key in cartoonList) {
                     const i = cartoonList[key];
                     const date = common.dateFormat(i['date']);
                     newArr.push(
-                        <tr key={key}>
-                            <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>{i['title']}</a></td>
-                            <td>{date}</td>
-                            <td>{i['recommend']}</td>
-                        </tr>
-                    )
+                        <ListGroup.Item key={key}>
+                            <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
+                                <div>
+                                    <span>{i['title']}</span>
+                                    <div>
+                                        <span>★{i['recommend']}&nbsp;</span>
+                                        <span>{date}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </ListGroup.Item>
+                    );
                 }
-                return newArr;
-            } else {
+                return (<ListGroup variant='flush'>{newArr}</ListGroup>);
+            }else{
                 return(
-                    <tr>
-                        <td colSpan='3'>없어요</td>
-                    </tr>
+                    <ListGroup>
+                        <ListGroup.Item>
+                            없어요
+                        </ListGroup.Item>
+                    </ListGroup>
                 );
             }
         }
@@ -104,18 +114,7 @@ function List() {
 
         return (
             <div className='List'>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>title</th>
-                            <th>date</th>
-                            <th>rec</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {renderCartoonList()}
-                    </tbody>
-                </table>
+                {renderCartoonList()}
                 <div>
                     <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
                 </div>
@@ -127,15 +126,18 @@ function List() {
         <div className='List'>
             <div>
                 List<br/>
-                {writer_id && nickname && (
-                    <>
-                        {writer_id==='a'?'유동':`아이디: ${writer_id}`}<br/>
-                        닉네임: {nickname}<br />
-                        <Link to={`/info?id=${writer_id}&nickname=${nickname}`}>작가 상세 보기</Link><br/>
-                    </>
-                )}
-                {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
+                <div>
+                    {writer_id && nickname && (
+                        <>
+                            <Link to={`/info?id=${writer_id}&nickname=${nickname}`}><span>{writer_id==='a'?'유동':`아이디: ${writer_id}`}&nbsp;닉네임: {nickname}</span></Link>
+                        </>
+                    )}
+                </div>
+                <div>
+                    {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
+                </div>
             </div>
+            총 i 화
             <List />
         </div>
     );
