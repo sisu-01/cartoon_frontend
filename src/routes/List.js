@@ -12,9 +12,31 @@ function List() {
     console.log('########최초 한 번만 렌더 List');
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
-    const writer_id = initParam.get('wid') || false;
-    const nickname = initParam.get('nickname') || false;
     const prev = localStorage.getItem('prev') || false;
+
+    const [init, setInit] = useState(null);
+
+    useEffect(() => {
+        async function init() {
+            let url = '';
+            url += API_SERVER;
+            url += `/listInfo?id=${id}`;
+            console.log('getListInfo:', url);
+            await fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if(data['ok']){
+                    setInit(data);
+                }else{
+                    alert('그런거 없긔');
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
+        }
+        init();
+    }, []);
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
@@ -124,21 +146,27 @@ function List() {
 
     return (
         <div className='List'>
-            <div>
-                List<br/>
-                <div>
-                    {writer_id && nickname && (
-                        <>
-                            <Link to={`/info?id=${writer_id}&nickname=${nickname}`}><span>{writer_id==='a'?'유동':`아이디: ${writer_id}`}&nbsp;닉네임: {nickname}</span></Link>
-                        </>
-                    )}
-                </div>
-                <div>
-                    {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
-                </div>
-            </div>
-            총 i 화
-            <List />
+            {init ? (
+                <>
+                    <div>
+                        List<br/>
+                        <div>
+                            {init['writer_id'] && init['writer_nickname'] && (
+                                <>
+                                    <Link to={`/info?id=${init['writer_id']}&nickname=${init['writer_nickname']}`}><span>{init['writer_id']==='a'?'유동':`아이디: ${init['writer_id']}`}&nbsp;닉네임: {init['writer_nickname']}</span></Link>
+                                </>
+                            )}
+                        </div>
+                        <div>
+                            {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
+                        </div>
+                    </div>
+                    총 {init['count']} 화
+                    <List />
+                </>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
 }
