@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
@@ -111,6 +114,31 @@ function Series() {
         }
     }
 
+    //만화 목록 렌더링2
+    function renderSeriesList2() {
+        console.log('renderSeriesList2');
+        const newArr = [];
+        if(seriesList){
+            for(const key in seriesList) {
+                const i = seriesList[key];
+                newArr.push(
+                    <Col sm={4} md={3} key={key}>
+                        <Link to={`/list?id=${i['id']}`}>
+                            {i['title']}
+                        </Link>
+                    </Col>
+                );
+            }
+            return newArr;
+        }else{
+            return(
+                <tr>
+                    <td colSpan='2'>없어요</td>
+                </tr>
+            );
+        }
+    }
+
     //페이징 버튼 핸들러
     function pageHandler(page) {
         common.navigate(getUrl(page), getSeries);
@@ -143,6 +171,9 @@ function Series() {
                     {renderSeriesList()}
                 </tbody>
             </table>
+            <Row>
+                {renderSeriesList2()}
+            </Row>
             <div>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
             </div>
