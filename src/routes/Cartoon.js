@@ -1,6 +1,8 @@
 import React, { useEffect, useRef,useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
@@ -114,6 +116,43 @@ function Cartoon() {
         }
     }
 
+    //만화 목록 렌더링2
+    function renderCartoonList2() {
+        console.log('renderCartoonList2');
+        const newArr = [];
+        if(cartoonList){
+            for(const key in cartoonList) {
+                const i = cartoonList[key];
+                const date = common.dateFormat(i['date']);
+                newArr.push(
+                    <ListGroup.Item key={key} className='d-flex'>
+                        <div className='flex-grow-1'>
+                            <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
+                                <span>{i['title']}</span>
+                                <div>
+                                    <span>★{i['recommend']}&nbsp;</span>
+                                    <span>{date}</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div>
+                            <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}>{i['writer_nickname']}</Link>
+                        </div>
+                    </ListGroup.Item>
+                );
+            }
+            return (<ListGroup variant='flush'>{newArr}</ListGroup>);
+        }else{
+            return(
+                <ListGroup>
+                    <ListGroup.Item>
+                        없어요
+                    </ListGroup.Item>
+                </ListGroup>
+            );
+        }
+    }
+
     //페이징 버튼 핸들러
     function pageHandler(page) {
         common.navigate(getUrl(page), getCartoon);
@@ -150,6 +189,7 @@ function Cartoon() {
                     {renderCartoonList()}
                 </tbody>
             </table>
+            {renderCartoonList2()}
             <div>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
             </div>
