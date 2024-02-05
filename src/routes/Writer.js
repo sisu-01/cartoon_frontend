@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import Table from 'react-bootstrap/Table';
+
 import Paging from '../components/Paging';
 
 import * as common from '../utils/common';
@@ -130,7 +132,7 @@ function Writer() {
 
     return (
         <div className='Writer'>
-            <table>
+            <Table responsive striped bordered hover>
                 <thead>
                     <tr>
                         <th>id</th>
@@ -152,7 +154,7 @@ function Writer() {
                 <tbody>
                     {renderWriterList()}
                 </tbody>
-            </table>
+            </Table>
             <div>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
             </div>
