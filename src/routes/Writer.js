@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
+import Form from 'react-bootstrap/Form';
 
 import Paging from '../components/Paging';
 
@@ -14,11 +15,11 @@ function Writer() {
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
     const tempSort = useRef(Number(searchParams.get('sort')) || 1);
     const sortList = [
-        {'id': 1, 'label': 'nickname'},
-        {'id': 2, 'label': 'first rec'},
-        {'id': 3, 'label': 'count'},
-        {'id': 4, 'label': 'recommend'},
-        {'id': 5, 'label': 'average'}
+        {'id': 1, 'label': '필명'},
+        {'id': 2, 'label': '첫념글'},
+        {'id': 3, 'label': '작품개수'},
+        {'id': 4, 'label': '누적개추'},
+        {'id': 5, 'label': '평균개추'}
     ]
 
     //페이징에 필요한 정보들
@@ -92,11 +93,11 @@ function Writer() {
         if (writerList) {
             for(const key in writerList) {
                 const i = writerList[key];
-                const id = i['id'] === 'a'? '유동': i['id'];
-                const date = common.dateFormat(i['date']);
+                // const id = i['id'] === 'a'? '유동': i['id'];
+                const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
                     <tr key={key}>
-                        <td>{id}</td>
+                        {/* <td>{id}</td> */}
                         <td>
                             <Link to={`/info?id=${i['id']}&nickname=${i['nickname']}`}>
                                 {i['nickname']}
@@ -135,19 +136,20 @@ function Writer() {
             <Table responsive striped bordered hover>
                 <thead>
                     <tr>
-                        <th>id</th>
+                        {/* <th>id</th> */}
                         {sortList.map(sort => (
-                            <th><label key={`sort_${sort.id}`}>
-                                <input
+                            <th>
+                                <Form.Check
                                     type='radio'
                                     id={sort.id}
                                     name='sort'
                                     value={sort.id}
                                     checked={tempSort.current === sort.id}
                                     onChange={({target: {value}}) => SortHandler(value)}
+                                    inline
+                                    label={sort.label}
                                 />
-                                {sort.label}
-                            </label></th>
+                            </th>
                         ))}
                     </tr>
                 </thead>
