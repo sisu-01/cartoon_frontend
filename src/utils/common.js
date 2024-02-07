@@ -1,9 +1,10 @@
 /**
  * String 날짜 형식을 예쁘게 만들어줘요~
  * @param {String} date 대충 날짜 형식 보내라잉
+ * @param {String} type default, short
  * @returns {String} 예쁜 날짜
  */
-export function dateFormat(date){
+export function dateFormat(date, type='default'){
     let d = new Date(date);
     let year = d.getFullYear();
     let month = '' + (d.getMonth() + 1);
@@ -19,7 +20,12 @@ export function dateFormat(date){
     if (min.length < 2)
         min = '0'+min;
     const days = ['일','월','화','수','목','금','토',];
-    return [year, month, day].join('.')+' ('+days[d.getDay()]+'요일)';
+
+    if (type === 'short') {
+        return [year, month].join('.');
+    } else {
+        return [year, month, day].join('.')+' ('+days[d.getDay()]+'요일)';
+    }
 }
 
 /**
