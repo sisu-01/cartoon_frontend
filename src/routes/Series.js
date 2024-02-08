@@ -122,7 +122,7 @@ function Series() {
             for(const key in seriesList) {
                 const i = seriesList[key];
                 newArr.push(
-                    <Col sm={4} md={3} key={key}>
+                    <Col sm={6} md={4} lg={3} key={key}>
                         <Link to={`/list?id=${i['id']}`}>
                             {i['title']}
                         </Link>
