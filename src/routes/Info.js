@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
@@ -87,7 +89,7 @@ function Info() {
                 alert(err);
             });
         }
-
+        
         //만화 목록 렌더링
         function renderCartoonList() {
             console.log('renderCartoonList');
@@ -97,19 +99,27 @@ function Info() {
                     const i = cartoonList[key];
                     const date = common.dateFormat(i['date']);
                     newArr.push(
-                        <tr key={key}>
-                            <td><a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>{i['title']}</a></td>
-                            <td>{date}</td>
-                            <td>{i['recommend']}</td>
-                        </tr>
+                        <ListGroup.Item key={key}>
+                            <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
+                                <div>
+                                    <span>{i['title']}</span>
+                                    <div>
+                                        <span>★{i['recommend']}&nbsp;</span>
+                                        <span>{date}</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </ListGroup.Item>
                     )
                 }
-                return newArr;
+                return (<ListGroup variant='flush'>{newArr}</ListGroup>);
             } else {
                 return(
-                    <tr>
-                        <td colSpan='3'>없어요</td>
-                    </tr>
+                    <ListGroup>
+                        <ListGroup.Item>
+                            없어요
+                        </ListGroup.Item>
+                    </ListGroup>
                 );
             }
         }
@@ -137,18 +147,7 @@ function Info() {
                     <Sort checked={tempSort.current} handler={SortHandler}/>
                     <Cut value={tempCut.current} handler={CutHandler}/>
                 </div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>title</th>
-                            <th>date</th>
-                            <th>rec</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {renderCartoonList()}
-                    </tbody>
-                </table>
+                {renderCartoonList()}
                 <div>
                     <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
                 </div>
