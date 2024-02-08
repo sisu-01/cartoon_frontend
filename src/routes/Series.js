@@ -86,37 +86,9 @@ function Series() {
         });
     }
 
-    //만화 목록 렌더링
+    //만화 목록 렌더링2
     function renderSeriesList() {
         console.log('renderSeriesList');
-        const newArr = [];
-        if(seriesList){
-            for(const key in seriesList) {
-                const i = seriesList[key];
-                newArr.push(
-                    <tr key={key}>
-                        <td>{i['id']}</td>
-                        <td>
-                            <Link to={`/list?id=${i['id']}`}>
-                                {i['title']}
-                            </Link>
-                        </td>
-                    </tr>
-                );
-            }
-            return newArr;
-        }else{
-            return(
-                <tr>
-                    <td colSpan='2'>없어요</td>
-                </tr>
-            );
-        }
-    }
-
-    //만화 목록 렌더링2
-    function renderSeriesList2() {
-        console.log('renderSeriesList2');
         const newArr = [];
         if(seriesList){
             for(const key in seriesList) {
@@ -162,17 +134,8 @@ function Series() {
                 <Sort checked={tempSort.current} handler={SortHandler}/>
                 <Cut value={tempCut.current} handler={CutHandler}/>
             </div>
-            <table>
-                <thead>
-                    <th>id</th>
-                    <th>title</th>
-                </thead>
-                <tbody>
-                    {renderSeriesList()}
-                </tbody>
-            </table>
             <Row>
-                {renderSeriesList2()}
+                {renderSeriesList()}
             </Row>
             <div>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
