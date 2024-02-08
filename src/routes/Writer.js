@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
@@ -10,6 +10,8 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Writer() {
+    const navigate = useNavigate();
+
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
@@ -96,12 +98,10 @@ function Writer() {
                 // const id = i['id'] === 'a'? '유동': i['id'];
                 const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
-                    <tr key={key}>
+                    <tr key={key} onClick={() => trHandler(`/info?id=${i['id']}&nickname=${i['nickname']}`)}>
                         {/* <td>{id}</td> */}
                         <td>
-                            <Link to={`/info?id=${i['id']}&nickname=${i['nickname']}`}>
                                 {i['nickname']}
-                            </Link>
                         </td>
                         <td>{date}</td>
                         <td>{i['count']}</td>
@@ -118,6 +118,10 @@ function Writer() {
             );
         }
         return newArr;
+    }
+    //tr 핸들러
+    function trHandler(url) {
+        navigate(url);
     }
 
     //페이징 버튼 핸들러
