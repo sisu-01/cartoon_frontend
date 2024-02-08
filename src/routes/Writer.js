@@ -98,7 +98,7 @@ function Writer() {
                 // const id = i['id'] === 'a'? '유동': i['id'];
                 const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
-                    <tr key={key} onClick={() => trHandler(`/info?id=${i['id']}&nickname=${i['nickname']}`)}>
+                    <tr key={key} onClick={() => trHandler(`/info?id=${i['id']}&nickname=${i['nickname']}`)} role='link'>
                         {/* <td>{id}</td> */}
                         <td>
                                 {i['nickname']}
