@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
@@ -98,7 +98,12 @@ function Writer() {
                 // const id = i['id'] === 'a'? '유동': i['id'];
                 const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
-                    <tr key={key} onClick={() => trHandler(`/info?id=${i['id']}&nickname=${i['nickname']}`)} role='link'>
+                    <tr
+                        key={key}
+                        className='cursor-pointer'
+                        onClick={() => trHandler(`/info?id=${i['id']}&nickname=${i['nickname']}`)}
+                        role='link'
+                    >
                         {/* <td>{id}</td> */}
                         <td>
                                 {i['nickname']}
