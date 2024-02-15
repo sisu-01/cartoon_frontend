@@ -12,15 +12,10 @@ import Footer from './layouts/Footer';
 import './style.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const containerStyle = {
-    borderColor: 'blue',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-  };
 root.render(
     <BrowserRouter>
         <Header />
-        <Container fluid='md' style={containerStyle}>
+        <Container fluid='md' className='border border-primary'>
             <App />
         </Container>
         <Footer />
