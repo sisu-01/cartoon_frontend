@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <Header />
-        <Container fluid='md' className='pt-3'>
+        <Container fluid='md' className='py-3'>
             <App />
         </Container>
         <Footer />
