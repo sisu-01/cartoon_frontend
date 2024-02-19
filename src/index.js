@@ -15,9 +15,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <Header />
-        <Container fluid='md' className='py-3'>
-            <App />
-        </Container>
+        <main>
+            <Container fluid='md'>
+                <App />
+            </Container>
+        </main>
         <Footer />
     </BrowserRouter>
 );
+document.getElementById('root').classList.add('grid-container');
