@@ -97,9 +97,9 @@ function Cartoon() {
                     <ListGroup.Item key={key} className='d-flex'>
                         <div className='flex-grow-1'>
                             <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
-                                <div>
-                                    <span className='word-break'>{i['title']}</span>
-                                    <div>
+                                <div className='hover-handler'>
+                                    <span className='cartoon-title word-break'>{i['title']}</span>
+                                    <div className='cartoon-info'>
                                         <span>★{i['recommend']}&nbsp;</span>
                                         <span>{date}</span>
                                     </div>

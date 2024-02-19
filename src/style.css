@@ -6,6 +6,31 @@ a {
     cursor: pointer;
 }
 
+.cartoon-title {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: #000;
+}
+
+.hover-handler:hover .cartoon-title {
+    text-decoration: underline;
+}
+
+a:visited .cartoon-title {
+    color: #999!important;
+}
+
+.cartoon-info {
+    font-weight: 500;
+    line-height: 19px;
+    letter-spacing: -0.5px;
+    color: #999;
+}
+
+.word-break {
+    word-break:keep-all;
+}
+
 .pad {
     padding-top: calc(var(--bs-gutter-x) * .2);
     padding-bottom: calc(var(--bs-gutter-x) * .2);
@@ -17,7 +42,4 @@ a {
     border: 1px solid #ebebeb;
     border-radius: 10px;
     padding: 7px;
-}
-.word-break {
-    word-break:keep-all;
 }
