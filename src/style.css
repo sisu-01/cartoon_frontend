@@ -20,6 +20,12 @@ a:visited .cartoon-title {
     color: #999!important;
 }
 
+.cartoon-writer {
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    color: #FFA500;
+}
+
 .cartoon-info {
     font-weight: 500;
     line-height: 19px;

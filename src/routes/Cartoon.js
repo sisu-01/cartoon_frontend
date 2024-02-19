@@ -106,8 +106,8 @@ function Cartoon() {
                                 </div>
                             </a>
                         </div>
-                        <div>
-                            <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`} className=''>{i['writer_nickname']}</Link>
+                        <div className='flex-shrink-0'>
+                            <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`} className='cartoon-writer'>{i['writer_nickname']}</Link>
                         </div>
                     </ListGroup.Item>
                 );
