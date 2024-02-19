@@ -107,7 +107,7 @@ function List() {
                         <ListGroup.Item key={key}>
                             <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
                                 <div>
-                                    <span>{i['title']}</span>
+                                    <span className='word-break'>{i['title']}</span>
                                     <div>
                                         <span>★{i['recommend']}&nbsp;</span>
                                         <span>{date}</span>

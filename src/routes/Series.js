@@ -96,7 +96,7 @@ function Series() {
                 newArr.push(
                     <Col key={key} sm={6} md={4} lg={3} xl={2} className='pad'>
                         <Link to={`/list?id=${i['id']}`}>
-                            <div className='series'>
+                            <div className='series word-break'>
                                 {i['title']}
                             </div>
                         </Link>

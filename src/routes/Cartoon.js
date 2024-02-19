@@ -98,8 +98,8 @@ function Cartoon() {
                         <div className='flex-grow-1'>
                             <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
                                 <div>
-                                    <span className=''>{i['title']}</span>
-                                    <div className=''>
+                                    <span className='word-break'>{i['title']}</span>
+                                    <div>
                                         <span>★{i['recommend']}&nbsp;</span>
                                         <span>{date}</span>
                                     </div>
