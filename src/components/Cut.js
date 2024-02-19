@@ -7,9 +7,10 @@ import Form from 'react-bootstrap/Form';
  */
 function Cut(props) {
     return (
-        <>
+        <div class='input-group mb-3'>
             <Form.Select
                 id='recommend_cut'
+                className='form-control'
                 size='sm'
                 onChange={({target: {value}}) => props.handler(value)}
                 value={props.value}
@@ -21,8 +22,8 @@ function Cut(props) {
                 <option value={500}>500</option>
                 <option value={1000}>1000</option>
             </Form.Select>
-            <label htmlFor='recommend_cut'>최초 개수 몇 개 이상 따흐흑</label>
-        </>
+            <span class='input-group-text'>최수 개추 수</span>
+        </div>
     );
 }
 
