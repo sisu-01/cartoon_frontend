@@ -94,9 +94,11 @@ function Series() {
             for(const key in seriesList) {
                 const i = seriesList[key];
                 newArr.push(
-                    <Col sm={6} md={4} lg={3} key={key}>
+                    <Col key={key} sm={6} md={4} lg={3} xl={2} className='pad'>
                         <Link to={`/list?id=${i['id']}`}>
-                            {i['title']}
+                            <div className='series'>
+                                {i['title']}
+                            </div>
                         </Link>
                     </Col>
                 );
@@ -130,14 +132,14 @@ function Series() {
 
     return (
         <div className='Series'>
-            <div>
+            <div className='mb-2'>
                 <Sort checked={tempSort.current} handler={SortHandler}/>
                 <Cut value={tempCut.current} handler={CutHandler}/>
             </div>
             <Row>
                 {renderSeriesList()}
             </Row>
-            <div>
+            <div className='mt-2'>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
             </div>
         </div>
