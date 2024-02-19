@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <BrowserRouter>
         <Header />
-        <Container fluid='md' className='border border-primary'>
+        <Container fluid='md'>
             <App />
         </Container>
         <Footer />
