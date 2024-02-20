@@ -1,3 +1,3 @@
-const API_SERVER = 'http://localhost:4000';
+const API_SERVER = process.env.REACT_APP_API_URL;
 
 export default API_SERVER;
