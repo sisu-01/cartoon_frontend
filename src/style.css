@@ -30,6 +30,15 @@ a {
     cursor: pointer;
 }
 
+.poong {
+    margin-left: calc(-1rem - calc(var(--bs-gutter-x) * .5));
+    margin-right: calc(-1rem - calc(var(--bs-gutter-x) * .5));
+}
+
+.poong > img {
+    width: 100%;
+}
+
 .cartoon-title {
     font-weight: 600;
     letter-spacing: -0.5px;
