@@ -118,7 +118,7 @@ function Writer() {
         } else {
             return(
                 <tr>
-                    <td colSpan='3'>없어요</td>
+                    <td colSpan='5'>없어요</td>
                 </tr>
             );
         }
