@@ -27,7 +27,6 @@ function List() {
             .then(response => response.json())
             .then(data => {
                 if(data['ok']){
-                    console.log(data);
                     setInit(data);
                 }else{
                     alert('그런거 없긔');
