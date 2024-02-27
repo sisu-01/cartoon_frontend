@@ -38,7 +38,7 @@ function List() {
             });
         }
         init();
-    }, []);
+    }, [id]);
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
