@@ -147,7 +147,7 @@ function Info() {
 
         return (
             <div className='List'>
-                <MetaTag title={nickname} description={nickname} url={currentUrl} />
+                <MetaTag title={`${nickname}의 만화들`} description={`${nickname}의 만화 목록`} url={currentUrl} />
                 <div>
                     <Sort checked={tempSort.current} handler={SortHandler}/>
                     <Cut value={tempCut.current} handler={CutHandler}/>

@@ -27,6 +27,7 @@ function List() {
             .then(response => response.json())
             .then(data => {
                 if(data['ok']){
+                    console.log(data);
                     setInit(data);
                 }else{
                     alert('그런거 없긔');
@@ -140,7 +141,7 @@ function List() {
 
         return (
             <div className='List'>
-                <MetaTag title='이름 미정' description='카연갤 필터 사이트얌' url={currentUrl} />
+                <MetaTag title={init['title']} description={`${init['writer_nickname']}의 연재 만화`} url={currentUrl} />
                 {renderCartoonList()}
                 <div>
                     <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
