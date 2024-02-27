@@ -1,5 +1,5 @@
 import React, { useEffect, useRef,useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -27,9 +27,8 @@ function Cartoon() {
 
     //이전 페이지 버튼을 위한 주소 저장
     const location = window.location;
-    localStorage.setItem('prev', location.pathname+location.search);
-
-    const currentUrl = useLocation().pathname;
+    const currentUrl = location.pathname+location.search;
+    localStorage.setItem('prev', currentUrl);
 
     useEffect(() => {
         getCartoon();

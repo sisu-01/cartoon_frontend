@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
@@ -32,9 +32,8 @@ function Writer() {
 
     //이전 페이지 버튼을 위한 주소 저장
     const location = window.location;
-    localStorage.setItem('prev', location.pathname+location.search);
-    
-    const currentUrl = useLocation().pathname;
+    const currentUrl = location.pathname+location.search;
+    localStorage.setItem('prev', currentUrl);
 
     useEffect(() => {
         getWriter();

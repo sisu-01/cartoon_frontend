@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -52,7 +52,8 @@ function List() {
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
 
-        const currentUrl = useLocation().pathname;
+        const location = window.location;
+        const currentUrl = location.pathname+location.search;
 
         //최초 실행
         useEffect(() => { 
