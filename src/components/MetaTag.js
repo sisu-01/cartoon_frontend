@@ -8,7 +8,6 @@ import { Helmet } from 'react-helmet-async';
  * @param {*} url url
  */
 function MetaTag(props) {
-    console.log(props);
     return (
         <Helmet>
             <title>{props.title}</title>
