@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import MetaTag from '../components/MetaTag';
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
@@ -28,6 +29,8 @@ function Series() {
     //이전 페이지 버튼을 위한 주소 저장
     const location = window.location;
     localStorage.setItem('prev', location.pathname+location.search);
+
+    const currentUrl = useLocation().pathname;
 
     useEffect(() => {
         getSeries();
@@ -134,6 +137,7 @@ function Series() {
 
     return (
         <div className='Series'>
+            <MetaTag title='Test Series' description='테스트인 시리즈 분류' url={currentUrl} />
             <div className='mb-2'>
                 <Sort checked={tempSort.current} handler={SortHandler}/>
                 <Cut value={tempCut.current} handler={CutHandler}/>

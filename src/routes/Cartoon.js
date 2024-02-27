@@ -1,8 +1,9 @@
 import React, { useEffect, useRef,useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
+import MetaTag from '../components/MetaTag';
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
@@ -27,6 +28,8 @@ function Cartoon() {
     //이전 페이지 버튼을 위한 주소 저장
     const location = window.location;
     localStorage.setItem('prev', location.pathname+location.search);
+
+    const currentUrl = useLocation().pathname;
 
     useEffect(() => {
         getCartoon();
@@ -143,6 +146,7 @@ function Cartoon() {
 
     return (
         <div className='Cartoon'>
+            <MetaTag title='Cartoon' description='만화 목록' url={currentUrl} />
             <div>
                 <Sort checked={tempSort.current} handler={SortHandler}/>
                 <Cut value={tempCut.current} handler={CutHandler}/>

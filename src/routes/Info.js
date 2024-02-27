@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
+import MetaTag from '../components/MetaTag';
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
@@ -31,6 +32,8 @@ function Info() {
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
+
+        const currentUrl = useLocation().pathname;
 
         //최초 실행
         useEffect(() => { 
@@ -143,6 +146,7 @@ function Info() {
 
         return (
             <div className='List'>
+                <MetaTag title={nickname} description={nickname} url={currentUrl} />
                 <div>
                     <Sort checked={tempSort.current} handler={SortHandler}/>
                     <Cut value={tempCut.current} handler={CutHandler}/>

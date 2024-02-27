@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
 
+import MetaTag from '../components/MetaTag';
 import Paging from '../components/Paging';
 
 import * as common from '../utils/common';
@@ -32,6 +33,8 @@ function Writer() {
     //이전 페이지 버튼을 위한 주소 저장
     const location = window.location;
     localStorage.setItem('prev', location.pathname+location.search);
+    
+    const currentUrl = useLocation().pathname;
 
     useEffect(() => {
         getWriter();
@@ -142,6 +145,7 @@ function Writer() {
 
     return (
         <div className='Writer'>
+            <MetaTag title='Writer' description='작가 목록' url={currentUrl} />
             <Table responsive striped bordered hover>
                 <thead>
                     <tr>

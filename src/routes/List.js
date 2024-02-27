@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
+import MetaTag from '../components/MetaTag';
 import Paging from '../components/Paging';
 
 import * as common from '../utils/common';
@@ -50,6 +51,8 @@ function List() {
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
+
+        const currentUrl = useLocation().pathname;
 
         //최초 실행
         useEffect(() => { 
@@ -136,6 +139,7 @@ function List() {
 
         return (
             <div className='List'>
+                <MetaTag title='이름 미정' description='카연갤 필터 사이트얌' url={currentUrl} />
                 {renderCartoonList()}
                 <div>
                     <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
