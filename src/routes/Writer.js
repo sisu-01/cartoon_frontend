@@ -98,12 +98,13 @@ function Writer() {
             for(const key in writerList) {
                 const i = writerList[key];
                 // const id = i['id'] === 'a'? '유동': i['id'];
+                const zz = encodeURIComponent(i['nickname']);
                 const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
                     <tr
                         key={key}
                         className='cursor-pointer'
-                        onClick={() => trHandler(`/info?id=${i['id']}&nickname=${i['nickname']}`)}
+                        onClick={() => trHandler(`/info?id=${i['id']}&nickname=${zz}`)}
                         role='link'
                     >
                         {/* <td>{id}</td> */}
