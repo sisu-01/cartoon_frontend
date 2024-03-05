@@ -17,6 +17,29 @@ function Info() {
     const nickname = initParam.get('nickname');
     const prev = localStorage.getItem('prev') || false;
 
+    const [init, setInit] = useState(null);
+
+    useEffect(() => {
+        async function init() {
+            let url = '';
+            url += API_SERVER;
+            url += `/infoCount?id=${id}&nickname=${encodeURIComponent(nickname)}`;
+            await fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if(data['ok']){
+                    setInit(data);
+                }else{
+                    alert('그런거 없긔');
+                }
+            })
+            .catch(err => {
+                alert(err);
+            });
+        }
+        init();
+    }, [id]);
+
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
 
@@ -159,11 +182,18 @@ function Info() {
     return (
         <div className='Info'>
             <div>
-                Info<br/>
-                {id==='a'?'유동':`아이디: ${id}`}<br/>
-                닉네임: {nickname}
-                <hr/>
                 {prev? <Link to={`${prev}`}>목록으로 돌아가기</Link>: ''}
+                <br/>
+                <div className='d-flex align-items-center'>
+                    <h2>
+                        <em className='cartoon-writer'>{nickname}</em>
+                        <span>님의 작품</span>
+                    </h2>
+                    {init ? (
+                        <span className='ms-1 text-secondary'>총 {init['count']}</span>
+                    ) : ('')}
+                </div>
+                {/* {id==='a'?'유동':`아이디: ${id}`} */}
             </div>
             <List />
         </div>
