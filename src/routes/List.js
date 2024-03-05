@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
 
 import MetaTag from '../components/MetaTag';
@@ -36,6 +37,31 @@ function List() {
         }
         init();
     }, [id]);
+
+    function ShareSeries() {
+        function makeUrl() {
+            var obShareUrl = document.getElementById("ShareUrl");
+            obShareUrl.className = 'test';
+    
+            let result = '';
+            result += `${window.location.href}\n`
+            result += `제목: ${init['title']}\n`;
+            result += `작가: ${init['writer_nickname']}`;
+    
+            obShareUrl.value = result;
+            obShareUrl.select(); // 해당 값이 선택되도록 select() 합니다
+            document.execCommand("copy"); // 클립보드에 복사합니다.
+            obShareUrl.blur(); // 선된것을 다시 선택안된것으로 바꿈니다.
+            obShareUrl.className = "d-none";
+            alert("내용 복사 완료!");
+        }
+        return (
+            <>
+                <Button variant='outline-dark' onClick={() => makeUrl()}>공유하기</Button>    
+                <textarea id="ShareUrl" class="d-none" cols="30" rows="10"></textarea>
+            </>
+        );
+    }
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
@@ -171,7 +197,10 @@ function List() {
                         </span>
                         {/* {init['writer_id']==='a'?'유동':`아이디: ${init['writer_id']}`} */}
                     </div>
-                    <div className='mt-3 border-bottom text-secondary fw-medium'>
+                    <div className='my-2'>
+                        <ShareSeries />
+                    </div>
+                    <div className='mt-1 border-bottom text-secondary fw-medium'>
                         총 {init['count']} 화
                     </div>
                     <List />
