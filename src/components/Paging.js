@@ -8,7 +8,6 @@ import Pagination from 'react-bootstrap/Pagination';
  * @param {function} handler 클릭 핸들러
  */
 function Paging(props) {
-    console.log('paging');
     const { page, perPage, count, pageBtn, handler } = props;
     const pageGroup = Math.ceil(page / pageBtn);//현재 그룹
     const totalPage = Math.ceil(count / perPage);//전체 페이지 개수

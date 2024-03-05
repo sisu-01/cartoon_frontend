@@ -12,7 +12,6 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Info() {
-    console.log('########최초 한 번만 렌더 Info');
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
     const nickname = initParam.get('nickname');
@@ -20,7 +19,6 @@ function Info() {
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
-        console.log('###List');
 
         //url 파라미터들
         const searchParams = new URLSearchParams(window.location.search);
@@ -76,7 +74,6 @@ function Info() {
             if (tempCut.current) {
                 url += `&cut=${tempCut.current}`;
             }
-            console.log('getInfo:', url);
             fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -96,7 +93,6 @@ function Info() {
         
         //만화 목록 렌더링
         function renderCartoonList() {
-            console.log('renderCartoonList');
             const newArr = [];
             if (cartoonList) {
                 for(const key in cartoonList) {

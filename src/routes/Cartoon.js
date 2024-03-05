@@ -12,8 +12,6 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Cartoon() {
-    console.log('###Cartoon');
-
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
@@ -69,7 +67,6 @@ function Cartoon() {
         if (tempCut.current) {
             url += `&cut=${tempCut.current}`;
         }
-        console.log('getCartoon:', url);
         fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -89,7 +86,6 @@ function Cartoon() {
 
     //만화 목록 렌더링
     function renderCartoonList() {
-        console.log('renderCartoonList');
         const newArr = [];
         if(cartoonList){
             for(const key in cartoonList) {

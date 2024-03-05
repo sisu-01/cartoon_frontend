@@ -13,7 +13,6 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Series() {
-    console.log('###Series');
 
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
@@ -70,7 +69,6 @@ function Series() {
         if (tempCut.current) {
             url += `&cut=${tempCut.current}`;
         }
-        console.log('getSeries:', url);
         fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -90,7 +88,6 @@ function Series() {
 
     //만화 목록 렌더링2
     function renderSeriesList() {
-        console.log('renderSeriesList');
         const newArr = [];
         if(seriesList){
             for(const key in seriesList) {

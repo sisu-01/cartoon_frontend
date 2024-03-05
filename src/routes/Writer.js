@@ -72,7 +72,6 @@ function Writer() {
         if (false) {
             url += `&cut=0`;
         }
-        console.log('getWriter:', url);
         fetch(url)
         .then(response => response.json())
         .then(data => {
@@ -92,7 +91,6 @@ function Writer() {
 
     //작가 목록 렌더링
     function renderWriterList() {
-        console.log('renderWriterList');
         const newArr = [];
         if (writerList) {
             for(const key in writerList) {
