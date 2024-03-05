@@ -149,19 +149,31 @@ function List() {
             {init ? (
                 <>
                     <div>
-                        List<br/>
-                        <div>
+                        {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
+                    </div>
+                    <div>
+                        <h2 className='fw-semibold'>
+                            {init['title']}
+                        </h2>
+                    </div>
+                    <div>
+                        <span className='d-flex gap-1 text-secondary'>
                             {init['writer_id'] && init['writer_nickname'] && (
                                 <>
-                                    <Link to={`/info?id=${init['writer_id']}&nickname=${init['writer_nickname']}`}><span>{init['writer_id']==='a'?'유동':`아이디: ${init['writer_id']}`}&nbsp;닉네임: {init['writer_nickname']}</span></Link>
+                                    <Link to={`/info?id=${init['writer_id']}&nickname=${init['writer_nickname']}`}
+                                        className='cartoon-writer'>
+                                        {init['writer_nickname']}
+                                    </Link>
+                                    <span>∙</span>
+                                    작가
                                 </>
                             )}
-                        </div>
-                        <div>
-                            {prev && <Link to={`${prev}`}>목록으로 돌아가기</Link>}
-                        </div>
+                        </span>
+                        {/* {init['writer_id']==='a'?'유동':`아이디: ${init['writer_id']}`} */}
                     </div>
-                    총 {init['count']} 화
+                    <div className='mt-3 border-bottom text-secondary fw-medium'>
+                        총 {init['count']} 화
+                    </div>
                     <List />
                 </>
             ) : (
