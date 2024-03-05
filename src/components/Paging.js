@@ -42,7 +42,7 @@ function Paging(props) {
         newArr.push(<Pagination.Last key='disabled_last' disabled />);
     }
     return (
-        <Pagination size='sm' className='justify-content-center'>{newArr}</Pagination>
+        <Pagination size='md' className='justify-content-center'>{newArr}</Pagination>
     );
 }
 

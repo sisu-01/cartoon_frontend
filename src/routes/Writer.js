@@ -171,7 +171,7 @@ function Writer() {
                 </tbody>
             </Table>
             <div>
-                <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
+                <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
         </div>
     );

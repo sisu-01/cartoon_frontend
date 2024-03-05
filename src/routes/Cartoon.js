@@ -151,8 +151,8 @@ function Cartoon() {
                 <Cut value={tempCut.current} handler={CutHandler}/>
             </div>
             {renderCartoonList()}
-            <div>
-                <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
+            <div className='mt-2'>
+                <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
         </div>
     );

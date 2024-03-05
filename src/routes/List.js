@@ -142,8 +142,8 @@ function List() {
             <div className='List'>
                 <MetaTag title={init['title']} description={`${init['writer_nickname']}의 연재 만화`} url={currentUrl} />
                 {renderCartoonList()}
-                <div>
-                    <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={10} handler={pageHandler}/>
+                <div className='mt-2'>
+                    <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
                 </div>
             </div>
         );
