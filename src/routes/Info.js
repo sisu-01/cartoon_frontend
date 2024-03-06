@@ -180,19 +180,25 @@ function Info() {
 
     return (
         <div className='Info'>
-            <div>
-                {prev? <Link to={`${prev}`}>목록으로 돌아가기</Link>: ''}
-                <br/>
-                <div className='d-flex align-items-center'>
-                    <h2>
-                        <em className='cartoon-writer'>{nickname}</em>
-                        <span>님의 작품</span>
-                    </h2>
-                    {init ? <span className='ms-1 text-secondary'>총 {init['count']}</span> : ''}
-                </div>
-                {/* {id==='a'?'유동':`아이디: ${id}`} */}
-            </div>
-            {init ? <List /> : ''}
+            {init ? (
+                <>
+                    <div>
+                        {prev? <Link to={`${prev}`}>목록으로 돌아가기</Link>: ''}
+                        <br/>
+                        <div className='d-flex align-items-center'>
+                            <h2>
+                                <em className='cartoon-writer'>{nickname}</em>
+                                <span>님의 작품</span>
+                            </h2>
+                            <span className='ms-1 text-secondary'>총 {init['count']}</span>
+                        </div>
+                        {/* {id==='a'?'유동':`아이디: ${id}`} */}
+                    </div>
+                    <List />
+                </>
+            ) : (
+                <p>Loading...</p>
+            )}
         </div>
     );
 }
