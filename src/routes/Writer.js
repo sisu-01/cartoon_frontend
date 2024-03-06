@@ -147,9 +147,8 @@ function Writer() {
             <Table responsive striped bordered hover>
                 <thead>
                     <tr>
-                        {/* <th>id</th> */}
                         {sortList.map(sort => (
-                            <th>
+                            <th key={sort.id}>
                                 <Form.Check
                                     type='radio'
                                     id={sort.id}
