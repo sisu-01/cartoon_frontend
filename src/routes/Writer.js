@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
@@ -11,7 +11,8 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Writer() {
-    const navigate = useNavigate();
+    console.log('Writer');
+    //const navigate = useNavigate();
 
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
@@ -94,18 +95,17 @@ function Writer() {
             for(const key in writerList) {
                 const i = writerList[key];
                 // const id = i['id'] === 'a'? '유동': i['id'];
-                const nickname = encodeURIComponent(i['nickname']);
+                const URInickname = encodeURIComponent(i['nickname']);
                 const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
                     <tr
                         key={key}
-                        className='cursor-pointer'
-                        onClick={() => trHandler(`/info?id=${i['id']}&nickname=${nickname}`)}
-                        role='link'
+                        //className='cursor-pointer'
+                        //onClick={() => trHandler(`/info?id=${i['id']}&nickname=${URInickname}`)}
+                        //role='link'
                     >
-                        {/* <td>{id}</td> */}
                         <td>
-                                {i['nickname']}
+                            <Link to={`/info?id=${i['id']}&nickname=${URInickname}`} className='cartoon-writer'>{i['nickname']}</Link>
                         </td>
                         <td>{date}</td>
                         <td>{i['count']}</td>
@@ -124,9 +124,9 @@ function Writer() {
         return newArr;
     }
     //tr 핸들러
-    function trHandler(url) {
-        navigate(url);
-    }
+    // function trHandler(url) {
+    //     navigate(url);
+    // }
 
     //페이징 버튼 핸들러
     function pageHandler(page) {
