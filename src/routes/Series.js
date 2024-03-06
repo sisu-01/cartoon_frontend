@@ -107,9 +107,7 @@ function Series() {
             return newArr;
         }else{
             return(
-                <tr>
-                    <td colSpan='2'>없어요</td>
-                </tr>
+                <div>없어요.. 뭔가 문제가 생긴듯 😥</div>
             );
         }
     }
