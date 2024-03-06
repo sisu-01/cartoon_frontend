@@ -7,14 +7,13 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 function AlertModal() {
-    console.log('AlertModal');
-    const [showModal, setShowModal] = useState(true);
+    const [showModal, setShowModal] = useState(false);
     const [skipPopup, setSkipPopup] = useState(false);
 
     useEffect(() => {
         const skipPopup = Cookies.get('skipPopup');
-        if (skipPopup === 'true') {
-            setShowModal(false);
+        if (skipPopup === undefined) {
+            setShowModal(true);
         }
     }, []);
 
