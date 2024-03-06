@@ -47,18 +47,16 @@ function Writer() {
         if (tempSort.current) {
             url += `&sort=${tempSort.current}`;
         }
-        if (false) {
-            url += `&cut=0`;
-        }
         return url;
     }
     
     //브라우저 뒤로가기, 앞으로가기 감지
     window.onpopstate = () => {
-        const popParams = new URLSearchParams(window.location.search);
-        tempPage.current = Number(popParams.get('page')) || 1;
-        tempSort.current = Number(popParams.get('sort')) || 1;
-        getWriter();
+        common.popNavigate({
+            page: tempPage,
+            sort: tempSort,
+            callback: getWriter,
+        });
     };
     
     //목록 가져오는 api
@@ -96,13 +94,13 @@ function Writer() {
             for(const key in writerList) {
                 const i = writerList[key];
                 // const id = i['id'] === 'a'? '유동': i['id'];
-                const zz = encodeURIComponent(i['nickname']);
+                const nickname = encodeURIComponent(i['nickname']);
                 const date = common.dateFormat(i['date'], 'short');
                 newArr.push(
                     <tr
                         key={key}
                         className='cursor-pointer'
-                        onClick={() => trHandler(`/info?id=${i['id']}&nickname=${zz}`)}
+                        onClick={() => trHandler(`/info?id=${i['id']}&nickname=${nickname}`)}
                         role='link'
                     >
                         {/* <td>{id}</td> */}
