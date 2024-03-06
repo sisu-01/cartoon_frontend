@@ -42,7 +42,6 @@ function Info() {
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
-
         //url 파라미터들
         const searchParams = new URLSearchParams(window.location.search);
         const tempPage = useRef(Number(searchParams.get('page')) || 1);
@@ -189,13 +188,11 @@ function Info() {
                         <em className='cartoon-writer'>{nickname}</em>
                         <span>님의 작품</span>
                     </h2>
-                    {init ? (
-                        <span className='ms-1 text-secondary'>총 {init['count']}</span>
-                    ) : ('')}
+                    {init ? <span className='ms-1 text-secondary'>총 {init['count']}</span> : ''}
                 </div>
                 {/* {id==='a'?'유동':`아이디: ${id}`} */}
             </div>
-            <List />
+            {init ? <List /> : ''}
         </div>
     );
 }
