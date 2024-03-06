@@ -7,7 +7,7 @@ import Form from 'react-bootstrap/Form';
  */
 function Cut(props) {
     return (
-        <div class='input-group'>
+        <div className='input-group'>
             <Form.Select
                 id='recommend_cut'
                 className='form-control'
@@ -22,7 +22,7 @@ function Cut(props) {
                 <option value={500}>500</option>
                 <option value={1000}>1000</option>
             </Form.Select>
-            <span class='input-group-text'>최소 개추 수</span>
+            <span className='input-group-text'>최소 개추 수</span>
         </div>
     );
 }

@@ -58,7 +58,7 @@ function List() {
         return (
             <>
                 <Button variant='outline-dark' onClick={() => makeUrl()}>공유하기</Button>    
-                <textarea id="ShareUrl" class="d-none" cols="30" rows="10"></textarea>
+                <textarea id="ShareUrl" className="d-none" cols="30" rows="10"></textarea>
             </>
         );
     }
