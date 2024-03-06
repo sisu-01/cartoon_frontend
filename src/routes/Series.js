@@ -13,7 +13,6 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Series() {
-
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
@@ -86,7 +85,7 @@ function Series() {
         });
     }
 
-    //만화 목록 렌더링2
+    //만화 목록 렌더링
     function renderSeriesList() {
         const newArr = [];
         if(seriesList){
