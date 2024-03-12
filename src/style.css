@@ -45,6 +45,15 @@ a {
     color: #000;
 }
 
+.update-mark {
+    margin-right: 0.3em;
+    border: 0.15em solid #ff4747;
+    padding: 0px 0.3em;
+    color: #ff4747;
+    font-weight: bold;
+    font-size: 0.7em;
+}
+
 .hover-handler:hover .cartoon-title {
     text-decoration: underline;
 }

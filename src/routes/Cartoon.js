@@ -91,11 +91,15 @@ function Cartoon() {
             for(const key in cartoonList) {
                 const i = cartoonList[key];
                 const date = common.dateFormat(i['date']);
+                const isUpdate = common.isDateWithin14Days(i['date']);
                 newArr.push(
                     <ListGroup.Item key={key} className='d-flex'>
                         <div className='flex-grow-1'>
                             <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
                                 <div className='hover-handler'>
+                                    {isUpdate?
+                                        <span className='update-mark'>UP</span>
+                                    : ''}
                                     <span className='cartoon-title word-break'>{i['title']}</span>
                                     <div className='cartoon-info'>
                                         <span>★{i['recommend']}&nbsp;</span>

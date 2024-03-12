@@ -29,6 +29,24 @@ export function dateFormat(date, type='default'){
 }
 
 /**
+ * 날짜가 14일 이내인지 아닌지 알아보아요~
+ * @param {String} date 날짜 형식의 문자열
+ * @returns {Boolean} 현재 날짜로부터 15일 이내면 true, 아니면 false
+ */
+export function isDateWithin14Days(date) {
+    const cartoonDate = new Date(date);
+    cartoonDate.setHours(0, 0, 0, 0);
+    
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    const timeDiff = cartoonDate.getTime() - currentDate.getTime();
+    const daysDiff = timeDiff / (1000 * 3600 * 24);
+    console.log(daysDiff);
+    return daysDiff >= -14;
+}
+
+/**
  * 나만의 네비게이터 ㅎㅎ
  * @param {String} url history에 추가할 url
  * @param {function} callback 목록 불러올 api
