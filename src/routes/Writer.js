@@ -11,7 +11,6 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Writer() {
-    console.log('Writer');
     //const navigate = useNavigate();
 
     //url 파라미터들

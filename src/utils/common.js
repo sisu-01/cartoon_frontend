@@ -42,7 +42,6 @@ export function isDateWithin14Days(date) {
 
     const timeDiff = cartoonDate.getTime() - currentDate.getTime();
     const daysDiff = timeDiff / (1000 * 3600 * 24);
-    console.log(daysDiff);
     return daysDiff >= -14;
 }
 
