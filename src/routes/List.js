@@ -200,6 +200,7 @@ function List() {
                             )}
                         </span>
                         {/* {init['writer_id']==='a'?'유동':`아이디: ${init['writer_id']}`} */}
+                        <span>시리즈 기능이 완벽하지 않으니 작가 상세 페이지도 확인해보세요.</span>
                     </div>
                     <div className='my-2'>
                         <ShareSeries />
