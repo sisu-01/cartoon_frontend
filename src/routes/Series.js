@@ -91,10 +91,14 @@ function Series() {
         if(seriesList){
             for(const key in seriesList) {
                 const i = seriesList[key];
+                const isUpdate = common.isDateWithin14Days(i['last_update']);
                 newArr.push(
                     <Col key={key} sm={6} md={4} lg={3} xl={2} className='pad'>
                         <Link to={`/list?id=${i['id']}`}>
                             <div className='hover-handler series'>
+                                {isUpdate?
+                                    <span className='update-mark'>UP</span>
+                                : ''}
                                 <span className='cartoon-title word-break'>
                                     {i['title']}
                                 </span>
