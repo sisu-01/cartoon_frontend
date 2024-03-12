@@ -53,7 +53,7 @@ function List() {
             document.execCommand("copy"); // 클립보드에 복사합니다.
             obShareUrl.blur(); // 선된것을 다시 선택안된것으로 바꿈니다.
             obShareUrl.className = "d-none";
-            alert("내용 복사 완료!");
+            alert("url 복사 완료!");
         }
         return (
             <>
