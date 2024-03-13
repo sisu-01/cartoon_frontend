@@ -18,7 +18,7 @@ function Writer() {
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
     const tempSort = useRef(Number(searchParams.get('sort')) || 1);
     const sortList = [
-        {'id': 1, 'label': '필명'},
+        {'id': 1, 'label': '가나다순'},
         {'id': 2, 'label': '첫념글'},
         {'id': 3, 'label': '작품개수'},
         {'id': 4, 'label': '누적개추'},
