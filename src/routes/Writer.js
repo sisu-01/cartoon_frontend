@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 
 import MetaTag from '../components/MetaTag';
 import Paging from '../components/Paging';
@@ -164,6 +165,15 @@ function Writer() {
                     {renderWriterList()}
                 </tbody>
             </Table>
+            <div>
+            <InputGroup className='mb-3'>
+                <InputGroup.Text id='writer-nickname'>작가 이름</InputGroup.Text>
+                <Form.Control
+                    aria-label='nickname'
+                    aria-describedby='writer-nickname'
+                />
+            </InputGroup>
+            </div>
             <div>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
