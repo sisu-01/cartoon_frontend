@@ -141,6 +141,7 @@ function Writer() {
 
     return (
         <div className='Writer'>
+            <span>작가 이름을 눌러 상세 페이지로 이동할 수 있습니다.</span>
             <MetaTag title='Writer' description='작가 목록' url={currentUrl} />
             <Table responsive striped bordered hover>
                 <thead>
