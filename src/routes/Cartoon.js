@@ -2,6 +2,7 @@ import React, { useEffect, useRef,useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
+import Button from 'react-bootstrap/Button';
 
 import MetaTag from '../components/MetaTag';
 import Sort from '../components/Sort';
@@ -143,12 +144,36 @@ function Cartoon() {
         common.navigate(getUrl(), getCartoon);
     }
 
+    function test() {
+        let url = '';
+        url += API_SERVER+'/cartoonRand';
+        fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if(data['ok']){
+                window.open(`https://gall.dcinside.com/board/view/?id=cartoon&no=${data['cartoonId']}`, "_blank");
+            }else{
+                alert('그런거 없긔');
+            }
+        })
+        .catch(err => {
+            alert(err);
+        });
+    }
+
     return (
         <div className='Cartoon'>
             <MetaTag title='Cartoon' description='만화 목록' url={currentUrl} />
             <div>
                 <Sort checked={tempSort.current} handler={SortHandler}/>
                 <Cut value={tempCut.current} handler={CutHandler}/>
+            </div>
+            <div>
+                <Button
+                    variant='outline-primary'
+                    size='sm'
+                    onClick={() => test()}
+                >🔀랜덤 만화 보기</Button>
             </div>
             {renderCartoonList()}
             <div className='mt-2'>
