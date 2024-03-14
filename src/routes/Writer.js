@@ -18,6 +18,7 @@ function Writer() {
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
     const tempSort = useRef(Number(searchParams.get('sort')) || 1);
+    const tempNickname = useRef(String(searchParams.get('nickname')) || '');
     const sortList = [
         {'id': 1, 'label': '가나다순'},
         {'id': 2, 'label': '첫념글'},
@@ -48,6 +49,9 @@ function Writer() {
         if (tempSort.current) {
             url += `&sort=${tempSort.current}`;
         }
+        if (tempNickname.current !== '') {
+            url += `&nickname=${tempNickname.current}`;
+        }
         return url;
     }
     
@@ -68,8 +72,8 @@ function Writer() {
         if (tempSort.current) {
             url += `&sort=${tempSort.current}`;
         }
-        if (false) {
-            url += `&cut=0`;
+        if (tempNickname.current !== '') {
+            url += `&nickname=${tempNickname.current}`;
         }
         fetch(url)
         .then(response => response.json())
@@ -139,6 +143,22 @@ function Writer() {
         common.navigate(getUrl(), getWriter);
     }
 
+    //작가 검색 핸들러
+    function SearchHandler() {
+        common.navigate(getUrl(), getWriter);
+    }
+
+    //작가 검색 시간 체크
+    let searchTimer;
+    const searchIntervalTime = 500; // 0.5초
+    function clearTime() {
+        clearTimeout(searchTimer);
+    }
+    function setTime() {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(SearchHandler, searchIntervalTime);
+    }
+
     return (
         <div className='Writer'>
             <span>작가 이름을 눌러 상세 페이지로 이동할 수 있습니다.</span>
@@ -166,15 +186,17 @@ function Writer() {
                     {renderWriterList()}
                 </tbody>
             </Table>
-            <div>
             <InputGroup className='mb-3'>
                 <InputGroup.Text id='writer-nickname'>작가 이름</InputGroup.Text>
                 <Form.Control
+                    defaultValue={tempNickname.current}
                     aria-label='nickname'
                     aria-describedby='writer-nickname'
+                    onChange={(e) => tempNickname.current = e.target.value}
+                    onKeyDown={() => clearTime()}
+                    onKeyUp={() => setTime()}
                 />
             </InputGroup>
-            </div>
             <div>
                 <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
