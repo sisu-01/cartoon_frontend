@@ -18,7 +18,8 @@ function Writer() {
     const searchParams = new URLSearchParams(window.location.search);
     const tempPage = useRef(Number(searchParams.get('page')) || 1);
     const tempSort = useRef(Number(searchParams.get('sort')) || 1);
-    const tempNickname = useRef(String(searchParams.get('nickname')) || '');
+    const tempNickname = useRef(searchParams.get('nickname') !== null ? String(searchParams.get('nickname')) : '');
+
     const sortList = [
         {'id': 1, 'label': '가나다순'},
         {'id': 2, 'label': '첫념글'},
