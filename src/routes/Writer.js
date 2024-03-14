@@ -60,7 +60,8 @@ function Writer() {
     window.onpopstate = () => {
         common.popNavigate({
             page: tempPage,
-            sort: tempSort,
+            writerSort: tempSort,
+            writerNickname: tempNickname,
             callback: getWriter,
         });
     };

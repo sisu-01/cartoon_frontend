@@ -60,9 +60,17 @@ export function navigate(url, callback) {
  * @param {useRef} page 페이지
  * @param {useRef} sort 개추순
  * @param {useRef} cut 개추컷
+ * @param {useRef} writer_sort writer.js sort 정렬들
+ * @param {useRef} writer_nickname writer.js 작가 이름 검색
  * @param {function} callback 목록 api
  */
-export function popNavigate({page = 1,sort = false,cut = false,callback = null}) {
+export function popNavigate({
+    page = 1,
+    sort = false,
+    cut = false,
+    writerSort = false,
+    writerNickname = false,
+    callback = null}) {
     const popParams = new URLSearchParams(window.location.search);
     page.current = Number(popParams.get('page')) || 1;
     if (sort) {
@@ -70,6 +78,12 @@ export function popNavigate({page = 1,sort = false,cut = false,callback = null})
     }
     if (cut) {
         cut.current = popParams.get('cut') || false;
+    }
+    if (writerSort) {
+        writerSort.current = Number(popParams.get('sort')) || 1;
+    }
+    if (writerNickname) {
+        writerNickname.current = popParams.get('nickname') !== null ? String(popParams.get('nickname')) : ''
     }
     callback();
 }
