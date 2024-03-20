@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 
@@ -38,68 +38,105 @@ function Info() {
             });
         }
         init();
-    }, [id]);
+    }, [id, nickname]);
 
     //만화 목록이랑 페이징 들어갈 컴포넌트
     function List() {
+        const navigate = useNavigate();
+
         //url 파라미터들
         const searchParams = new URLSearchParams(window.location.search);
-        const tempPage = useRef(Number(searchParams.get('page')) || 1);
-        const tempSort = useRef(searchParams.get('sort') === 'true' || false);
-        const tempCut = useRef(searchParams.get('cut') || false);
+        const [pageState, setPageState] = useState(Number(searchParams.get('page')) || 1);
+        const [sortState, setSortState] = useState(searchParams.get('sort') === 'true' || false);
+        const [cutState, setCutState] = useState(searchParams.get('cut') || false);
+        const pageRef = useRef(pageState);
+        const sortRef = useRef(sortState);
+        const cutRef = useRef(cutState);
 
         //페이징에 필요한 정보들
         const [cartoonList, setCartoonList] = useState();
         const [perPage, setPerPage] = useState();
         const [count, setCount] = useState();
 
+        //수정 메타데이터를 위한 것?
         const location = window.location;
         const currentUrl = location.pathname+location.search;
 
         //최초 실행
         useEffect(() => { 
-            getInfo();
+            getInfo(true);
+
+            function handleBack() {
+                const popParams = new URLSearchParams(window.location.search);
+                pageRef.current = Number(popParams.get('page')) || 1;
+                sortRef.current = Number(popParams.get('sort') === 'true' || false);
+                cutRef.current = popParams.get('cut') || false;
+                getInfo(true);
+            }
+            // 뒤로가기 이벤트를 감지할 때 handleBack 함수를 실행
+            window.addEventListener('popstate', handleBack);
+            return () => {
+                // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+                window.removeEventListener('popstate', handleBack);
+            };
         }, []);
 
-        //네비게이터에 쓸 url 제조기
-        function getUrl(p=1) {
-            tempPage.current = Number(p);
-            let url = '';
-            url += `/info?page=${tempPage.current}&id=${id}&nickname=${nickname}`
-            if (tempSort.current) {
-                url += '&sort=true';
-            }
-            if (tempCut.current > 0) {
-                url += `&cut=${tempCut.current}`;
-            }
-            return url;
+        /**
+         * 네비게이터에 쓸 url 제조기 object 담아서 보내시오..
+         * @param {number} page 페이지
+         * @param {boolean} sort 정렬
+         * @param {number} cut 개추컷
+         * @returns {string} url
+         */
+        function getUrl({
+            page=false,
+            sort=false,
+            cut=false
+        }) {
+           //false라면? 즉 값을 받지 않는다면? 기본 state 적용
+           if (page===false) page = pageState
+           if (sort===false) sort = sortState;
+           if (cut===false) cut = cutState;
+   
+           let url = '';
+           url += `/info?id=${id}&nickname=${nickname}&page=${Number(page)}`
+           if (sort) {
+               url += '&sort=true';
+           }
+           if (Number(cut) > 0) {
+               url += `&cut=${Number(cut)}`;
+           }
+           return url;
         }
 
-        //브라우저 뒤로가기, 앞으로가기 감지
-        window.onpopstate = () => {
-            common.popNavigate({
-                page: tempPage,
-                sort: tempSort,
-                cut: tempCut,
-                callback: getInfo,
-            });
-        };
-
-        //목록 가져오는 api
-        function getInfo() {
+        /**
+         * 목록 가져오는 api
+         * @param {boolean} isFirstOrPop useEffect 처음이냐 아니냐
+         */
+        function getInfo(isFirstOrPop) {
             let url = '';
             url += API_SERVER;
-            url += `/info?page=${tempPage.current}&id=${id}&nickname=${encodeURIComponent(nickname)}`;
-            if (tempSort.current) {
+            url += `/info?page=${pageRef.current}&id=${id}&nickname=${encodeURIComponent(nickname)}`;
+            if (sortRef.current) {
                 url += '&sort=true';
             }
-            if (tempCut.current) {
-                url += `&cut=${tempCut.current}`;
+            if (cutRef.current) {
+                url += `&cut=${cutRef.current}`;
             }
             fetch(url)
             .then(response => response.json())
             .then(data => {
                 if(data['ok']){
+                    if(!isFirstOrPop) {
+                        navigate(getUrl({
+                            page: pageRef.current,
+                            sort: sortRef.current,
+                            cut: cutRef.current
+                        }));
+                    }
+                    setPageState(pageRef.current);
+                    setSortState(sortRef.current);
+                    setCutState(cutRef.current);
                     setCartoonList(data['list']);
                     setPerPage(data['perPage']);
                     setCount(data['count']);
@@ -150,33 +187,49 @@ function Info() {
             }
         }
 
+        /**
+         * ref 값 갱신하고 목록 api 호출
+         * @param {number} page 페이지
+         * @param {number} sort 정렬
+         * @param {string} nickname 닉네임
+         */
+        function setRefAndFetch({
+            page=false,
+            sort=false,
+            cut=false,
+        }) {
+            //false가 아니라면? 즉 값을 받았다면?
+            if (page!==false) pageRef.current = page;
+            if (sort!==false) sortRef.current = sort;
+            if (cut!==false) cutRef.current = cut;
+            getInfo();
+        }
+
         //페이징 버튼 핸들러
         function pageHandler(page) {
-            common.navigate(getUrl(page), getInfo);
+            setRefAndFetch({page: page});
         };
 
         //개추 정렬 핸들러
         function SortHandler(checked) {
-            tempSort.current = checked;
-            common.navigate(getUrl(), getInfo);
+            setRefAndFetch({sort: checked});
         }
 
         //개추 최소 컷 핸들러
         function CutHandler(cut) {
-            tempCut.current = cut;
-            common.navigate(getUrl(), getInfo);
+            setRefAndFetch({cut: cut});
         }
 
         return (
             <div className='List'>
                 <MetaTag title={`${nickname}의 만화들`} description={`${nickname}의 만화 목록`} url={currentUrl} />
                 <div>
-                    <Sort checked={tempSort.current} handler={SortHandler}/>
-                    <Cut value={tempCut.current} handler={CutHandler}/>
+                    <Sort checked={sortRef.current} handler={SortHandler}/>
+                    <Cut value={cutRef.current} handler={CutHandler}/>
                 </div>
                 {renderCartoonList()}
                 <div className='mt-2'>
-                    <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
+                    <Paging page={pageRef.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
                 </div>
             </div>
         );
