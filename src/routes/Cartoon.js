@@ -1,5 +1,5 @@
 import React, { useEffect, useRef,useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import ListGroup from 'react-bootstrap/ListGroup';
 import Button from 'react-bootstrap/Button';
@@ -13,11 +13,16 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Cartoon() {
+    const navigate = useNavigate();
+
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
-    const tempPage = useRef(Number(searchParams.get('page')) || 1);
-    const tempSort = useRef(searchParams.get('sort') === 'true' || false);
-    const tempCut = useRef(searchParams.get('cut') || false);
+    const [pageState, setPageState] = useState(Number(searchParams.get('page')) || 1);
+    const [sortState, setSortState] = useState(searchParams.get('sort') === 'true' || false);
+    const [cutState, setCutState] = useState(searchParams.get('cut') || false);
+    const pageRef = useRef(pageState);
+    const sortRef = useRef(sortState);
+    const cutRef = useRef(cutState);
 
     //페이징에 필요한 정보들
     const [cartoonList, setCartoonList] = useState();
@@ -30,48 +35,80 @@ function Cartoon() {
     localStorage.setItem('prev', currentUrl);
 
     useEffect(() => {
-        getCartoon();
+        getCartoon(true);
+
+        function handleBack() {
+            const popParams = new URLSearchParams(window.location.search);
+            pageRef.current = Number(popParams.get('page')) || 1;
+            sortRef.current = Number(popParams.get('sort') === 'true' || false);
+            cutRef.current = popParams.get('cut') || false;
+            getCartoon(true);
+        }
+        // 뒤로가기 이벤트를 감지할 때 handleBack 함수를 실행
+        window.addEventListener('popstate', handleBack);
+        return () => {
+            // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+            window.removeEventListener('popstate', handleBack);
+        };
     }, []);
 
-    //네비게이터에 쓸 url 제조기
-    function getUrl(p=1) {
-        tempPage.current = Number(p);
+    
+    /**
+     * 네비게이터에 쓸 url 제조기 object 담아서 보내시오..
+     * @param {number} page 페이지
+     * @param {boolean} sort 정렬
+     * @param {number} cut 개추컷
+     * @returns {string} url
+     */
+    function getUrl({
+        page=false,
+        sort=false,
+        cut=false
+    }) {
+        //false라면? 즉 값을 받지 않는다면? 기본 state 적용
+        if (page===false) page = pageState
+        if (sort===false) sort = sortState;
+        if (cut===false) cut = cutState;
+
         let url = '';
-        url += `/cartoon?page=${tempPage.current}`
-        if (tempSort.current) {
+        url += `/cartoon?page=${Number(page)}`
+        if (sort) {
             url += '&sort=true';
         }
-        if (tempCut.current > 0) {
-            url += `&cut=${tempCut.current}`;
+        if (Number(cut) > 0) {
+            url += `&cut=${Number(cut)}`;
         }
         return url;
     }
-    
-    //브라우저 뒤로가기, 앞으로가기 감지
-    window.onpopstate = () => {
-        common.popNavigate({
-            page: tempPage,
-            sort: tempSort,
-            cut: tempCut,
-            callback: getCartoon,
-        });
-    };
 
-    //목록 가져오는 api
-    function getCartoon() {
+    /**
+     * 목록 가져오는 api
+     * @param {boolean} isFirstOrPop useEffect 처음이냐 아니냐
+     */
+    function getCartoon(isFirstOrPop) {
         let url = '';
         url += API_SERVER;
-        url += `/cartoon?page=${tempPage.current}`;
-        if (tempSort.current) {
+        url += `/cartoon?page=${pageRef.current}`;
+        if (sortRef.current) {
             url += '&sort=true';
         }
-        if (tempCut.current) {
-            url += `&cut=${tempCut.current}`;
+        if (cutRef.current) {
+            url += `&cut=${cutRef.current}`;
         }
         fetch(url)
         .then(response => response.json())
         .then(data => {
             if(data['ok']){
+                if(!isFirstOrPop) {
+                    navigate(getUrl({
+                        page: pageRef.current,
+                        sort: sortRef.current,
+                        cut: cutRef.current
+                    }));
+                }
+                setPageState(pageRef.current);
+                setSortState(sortRef.current);
+                setCutState(cutRef.current);
                 setCartoonList(data['list']);
                 setPerPage(data['perPage']);
                 setCount(data['count']);
@@ -127,24 +164,40 @@ function Cartoon() {
         }
     }
 
+    /**
+     * ref 값 갱신하고 목록 api 호출
+     * @param {number} page 페이지
+     * @param {number} sort 정렬
+     * @param {string} nickname 닉네임
+     */
+    function setRefAndFetch({
+        page=false,
+        sort=false,
+        cut=false,
+    }) {
+        //false가 아니라면? 즉 값을 받았다면?
+        if (page!==false) pageRef.current = page;
+        if (sort!==false) sortRef.current = sort;
+        if (cut!==false) cutRef.current = cut;
+        getCartoon();
+    }
+
     //페이징 버튼 핸들러
     function pageHandler(page) {
-        common.navigate(getUrl(page), getCartoon);
+        setRefAndFetch({page: page});
     };
 
     //개추 정렬 핸들러
     function SortHandler(checked) {
-        tempSort.current = checked;
-        common.navigate(getUrl(), getCartoon);
+        setRefAndFetch({sort: checked});
     }
 
     //개추 최소 컷 핸들러
     function CutHandler(cut) {
-        tempCut.current = cut;
-        common.navigate(getUrl(), getCartoon);
+        setRefAndFetch({cut: cut});
     }
 
-    function test() {
+    function randomCartoon() {
         let url = '';
         url += API_SERVER+'/cartoonRand';
         fetch(url)
@@ -153,7 +206,7 @@ function Cartoon() {
             if(data['ok']){
                 window.open(`https://gall.dcinside.com/board/view/?id=cartoon&no=${data['cartoonId']}`, "_blank");
             }else{
-                alert('그런거 없긔');
+                alert('에러');
             }
         })
         .catch(err => {
@@ -165,19 +218,19 @@ function Cartoon() {
         <div className='Cartoon'>
             <MetaTag title='Cartoon' description='만화 목록' url={currentUrl} />
             <div>
-                <Sort checked={tempSort.current} handler={SortHandler}/>
-                <Cut value={tempCut.current} handler={CutHandler}/>
+                <Sort checked={sortRef.current} handler={SortHandler}/>
+                <Cut value={cutRef.current} handler={CutHandler}/>
             </div>
             <div>
                 <Button
                     variant='outline-primary'
                     size='sm'
-                    onClick={() => test()}
+                    onClick={() => randomCartoon()}
                 >🔀랜덤 만화 보기</Button>
             </div>
             {renderCartoonList()}
             <div className='mt-2'>
-                <Paging page={tempPage.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
+                <Paging page={pageRef.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
         </div>
     );
