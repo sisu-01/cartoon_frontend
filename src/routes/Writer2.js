@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
@@ -12,14 +12,16 @@ import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
 
 function Writer2() {
-    console.log('###Writer2.js');
     const navigate = useNavigate();
 
     //url 파라미터들
     const searchParams = new URLSearchParams(window.location.search);
-    const [tempPage, setTempPage] = useState(Number(searchParams.get('page')) || 1);
-    const [tempSort, setTempSort] = useState(Number(searchParams.get('sort')) || 1);
-    const [tempNickname, setTempNickname] = useState(searchParams.get('nickname') !== null ? String(searchParams.get('nickname')) : '');
+    const [pageState, setPageState] = useState(Number(searchParams.get('page')) || 1);
+    const [sortState, setSortState] = useState(Number(searchParams.get('sort')) || 1);
+    const [nicknameState, setNicknameState] = useState(searchParams.get('nickname') !== null ? String(searchParams.get('nickname')) : '');
+    const pageRef = useRef(pageState);
+    const sortRef = useRef(sortState);
+    const nicknameRef = useRef(nicknameState);
 
     const sortList = [
         {'id': 1, 'label': '가나다순'},
@@ -40,10 +42,23 @@ function Writer2() {
     localStorage.setItem('prev', currentUrl);
 
     useEffect(() => {
-        console.log('useEffect');
-        getWriter();
-    }, [tempPage, tempSort, tempNickname]);
+        getWriter(true);
 
+        function handleBack() {
+            const popParams = new URLSearchParams(window.location.search);
+            pageRef.current = Number(popParams.get('page')) || 1;
+            sortRef.current = Number(popParams.get('sort')) || 1;
+            nicknameRef.current = popParams.get('nickname') !== null ? String(popParams.get('nickname')) : '';
+            getWriter(true);
+        }
+        // 뒤로가기 이벤트를 감지할 때 handleBack 함수를 실행
+        window.addEventListener('popstate', handleBack);
+        return () => {
+            // 컴포넌트가 언마운트될 때 이벤트 리스너 제거
+            window.removeEventListener('popstate', handleBack);
+        };
+    }, []);
+    
     /**
      * 네비게이터에 쓸 url 제조기 object 담아서 보내시오~
      * @param {number} page 페이지
@@ -56,9 +71,9 @@ function Writer2() {
         nickname=false
     }) {
         //false라면? 즉 값을 받지 않는다면? 기본 state 적용
-        if (!page) page = tempPage;
-        if (!sort) sort = tempSort;
-        if (!nickname) nickname = tempNickname;
+        if (page===false) page = pageState;
+        if (sort===false) sort = sortState;
+        if (nickname===false) nickname = nicknameState;
 
         let url = '';
         url += `/writer2?page=${Number(page)}`
@@ -70,31 +85,35 @@ function Writer2() {
         }
         return url;
     }
-    
-    //브라우저 뒤로가기, 앞으로가기 감지
-    window.onpopstate = () => {
-        const popParams = new URLSearchParams(window.location.search);
-        setTempPage(Number(popParams.get('page')) || 1);
-        setTempSort(Number(popParams.get('sort')) || 1);
-        setTempNickname(popParams.get('nickname') !== null ? String(popParams.get('nickname')) : '');
-    };
-    
-    //목록 가져오는 api
-    function getWriter() {
+
+    /**
+     * 목록 가져오는 api
+     * @param {boolean} isFirstOrPop useEffect 처음이냐 아니냐
+     */
+    function getWriter(isFirstOrPop) {
         let url = '';
         url += API_SERVER;
-        url += `/writer?page=${tempPage}`;
-        if (tempSort) {
-            url += `&sort=${tempSort}`;
+        url += `/writer?page=${pageRef.current}`;
+        if (sortRef.current) {
+            url += `&sort=${sortRef.current}`;
         }
-        if (tempNickname !== '') {
-            url += `&nickname=${tempNickname}`;
+        if (nicknameRef.current !== '') {
+            url += `&nickname=${nicknameRef.current}`;
         }
-        console.log(url);
         fetch(url)
         .then(response => response.json())
         .then(data => {
             if(data['ok']){
+                if(!isFirstOrPop) {
+                    navigate(getUrl({
+                        page: pageRef.current,
+                        sort: sortRef.current,
+                        nickname: nicknameRef.current
+                    }));
+                }
+                setPageState(pageRef.current);
+                setSortState(sortRef.current);
+                setNicknameState(nicknameRef.current);
                 setWriterList(data['list']);
                 setPerPage(data['perPage']);
                 setCount(data['count']);
@@ -148,32 +167,37 @@ function Writer2() {
         navigate(url);
     }
 
+    /**
+     * ref 값 갱신하고 getWriter 호출
+     * @param {number} page 페이지
+     * @param {number} sort 정렬
+     * @param {string} nickname 닉네임
+     */
+    function setRefAndFetch({
+        page=false,
+        sort=false,
+        nickname=false,
+    }) {
+        //false가 아니라면? 즉 값을 받았다면?
+        if (page!==false) pageRef.current = page;
+        if (sort!==false) sortRef.current = sort;
+        if (nickname!==false) nicknameRef.current = nickname;
+        getWriter();
+    }
+
     //페이징 버튼 핸들러
     function pageHandler(page) {
-        navigate(getUrl({
-            page: page,
-        }));
-        setTempPage(page);
+        setRefAndFetch({page: page});
     };
 
     //작가 정렬 핸들러
     function SortHandler(value) {
-        navigate(getUrl({
-            page: 1,
-            sort: Number(value) || 1,
-        }));
-        setTempPage(1);
-        setTempSort(Number(value) || 1);
+        setRefAndFetch({page: 1, sort: Number(value) || 1});
     }
 
     //작가 검색 핸들러
     function SearchHandler(value) {
-        navigate(getUrl({
-            page: 1,
-            nickname: value,
-        }));
-        setTempPage(1);
-        setTempNickname(value);
+        setRefAndFetch({page:1, nickname: value});
     }
 
     function NicknameForm(props) {
@@ -202,6 +226,16 @@ function Writer2() {
         );
     }
 
+    //수정 디버그용 console.log
+    // 언젠가 뒤로가기 렌더링 두번 해결한다면..
+    // let zz;
+    // for(const key in writerList) {
+    //     const i = writerList[key];
+    //     zz = i['nickname'];
+    //     break;
+    // }
+    // console.log(`###Writer2.js\npage:${pageState}\nsort:${sortList[sortState-1]['label']}\nnick:${nicknameState}\nlist:${zz}\npage:${perPage}\ncunt:${count}`);
+    
     return (
         <div className='Writer'>
             <span>작가 이름을 눌러 상세 페이지로 이동할 수 있습니다.</span>
@@ -216,7 +250,7 @@ function Writer2() {
                                     id={sort.id}
                                     name='sort'
                                     value={sort.id}
-                                    checked={tempSort === sort.id}
+                                    checked={sortState === sort.id}
                                     onChange={({target: {value}}) => SortHandler(value)}
                                     inline
                                     label={sort.label}
@@ -231,10 +265,10 @@ function Writer2() {
             </Table>
             <InputGroup className='mb-3'>
                 <InputGroup.Text id='writer-nickname'>작가 이름</InputGroup.Text>
-                <NicknameForm SearchHandler={SearchHandler} default={tempNickname}/>
+                <NicknameForm SearchHandler={SearchHandler} default={nicknameState}/>
             </InputGroup>
             <div>
-                <Paging page={tempPage} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
+                <Paging page={pageState} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
         </div>
     );
