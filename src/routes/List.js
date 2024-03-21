@@ -96,14 +96,7 @@ function List() {
                 window.removeEventListener('popstate', handleBack);
             };
         }, []);
-
-        //네비게이터에 쓸 url 제조기
-        function getUrl(p=1) {
-            pageRef.current = Number(p);
-            let url = '';
-            url += `/list?id=${id}&page=${pageRef.current}`
-            return url;
-        }
+        
         /**
          * 네비게이터에 쓸 url 제조기 object 담아서 보내시오..
          * @param {number} page 페이지
