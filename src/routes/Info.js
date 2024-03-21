@@ -7,6 +7,7 @@ import MetaTag from '../components/MetaTag';
 import Sort from '../components/Sort';
 import Cut from '../components/Cut';
 import Paging from '../components/Paging';
+import SearchTextForm from '../components/SearchTextForm';
 
 import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
@@ -50,9 +51,11 @@ function Info() {
         const [pageState, setPageState] = useState(Number(searchParams.get('page')) || 1);
         const [sortState, setSortState] = useState(searchParams.get('sort') === 'true' || false);
         const [cutState, setCutState] = useState(searchParams.get('cut') || false);
+        const [titleState, setTitleState] = useState(searchParams.get('title') !== null ? String(searchParams.get('title')) : '');
         const pageRef = useRef(pageState);
         const sortRef = useRef(sortState);
         const cutRef = useRef(cutState);
+        const titleRef = useRef(titleState);
 
         //페이징에 필요한 정보들
         const [cartoonList, setCartoonList] = useState();
@@ -72,6 +75,7 @@ function Info() {
                 pageRef.current = Number(popParams.get('page')) || 1;
                 sortRef.current = Number(popParams.get('sort') === 'true' || false);
                 cutRef.current = popParams.get('cut') || false;
+                titleRef.current = popParams.get('nickname') !== null ? String(popParams.get('nickname')) : '';
                 getInfo(true);
             }
             // 뒤로가기 이벤트를 감지할 때 handleBack 함수를 실행
@@ -87,17 +91,20 @@ function Info() {
          * @param {number} page 페이지
          * @param {boolean} sort 정렬
          * @param {number} cut 개추컷
+         * @param {string} title 제목
          * @returns {string} url
          */
         function getUrl({
             page=false,
             sort=false,
-            cut=false
+            cut=false,
+            title=false
         }) {
            //false라면? 즉 값을 받지 않는다면? 기본 state 적용
            if (page===false) page = pageState
            if (sort===false) sort = sortState;
            if (cut===false) cut = cutState;
+           if (title===false) title = titleState;
    
            let url = '';
            url += `/info?id=${id}&nickname=${nickname}&page=${Number(page)}`
@@ -107,6 +114,10 @@ function Info() {
            if (Number(cut) > 0) {
                url += `&cut=${Number(cut)}`;
            }
+           if (title) {
+            url += `&title=${title}`;
+            }
+
            return url;
         }
 
@@ -124,6 +135,9 @@ function Info() {
             if (cutRef.current) {
                 url += `&cut=${cutRef.current}`;
             }
+            if (titleRef.current !== '') {
+                url += `&title=${titleRef.current}`;
+            }
             fetch(url)
             .then(response => response.json())
             .then(data => {
@@ -132,12 +146,14 @@ function Info() {
                         navigate(getUrl({
                             page: pageRef.current,
                             sort: sortRef.current,
-                            cut: cutRef.current
+                            cut: cutRef.current,
+                            title: titleRef.current
                         }));
                     }
                     setPageState(pageRef.current);
                     setSortState(sortRef.current);
                     setCutState(cutRef.current);
+                    setTitleState(titleRef.current);
                     setCartoonList(data['list']);
                     setPerPage(data['perPage']);
                     setCount(data['count']);
@@ -192,17 +208,19 @@ function Info() {
          * ref 값 갱신하고 목록 api 호출
          * @param {number} page 페이지
          * @param {number} sort 정렬
-         * @param {string} nickname 닉네임
+         * @param {string} title 제목
          */
         function setRefAndFetch({
             page=false,
             sort='default',
             cut=false,
+            title=false
         }) {
             //false가 아니라면? 즉 값을 받았다면?
             if (page!==false) pageRef.current = page;
             if (sort!=='default') sortRef.current = sort;
             if (cut!==false) cutRef.current = cut;
+            if (title!==false) titleRef.current = title;
             getInfo();
         }
 
@@ -221,6 +239,11 @@ function Info() {
             setRefAndFetch({cut: cut});
         }
 
+        //제목 검색 핸들러
+        function SearchTextHandler(value) {
+            setRefAndFetch({page:1, title: value});
+        }
+
         return (
             <div className='List'>
                 <MetaTag title={`${nickname}의 만화들`} description={`${nickname}의 만화 목록`} url={currentUrl} />
@@ -229,6 +252,7 @@ function Info() {
                     <Cut value={cutRef.current} handler={CutHandler}/>
                 </div>
                 {renderCartoonList()}
+                <SearchTextForm label={'만화 제목'} SearchHandler={SearchTextHandler} default={titleState}/>
                 <div className='mt-2'>
                     <Paging page={pageRef.current} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
                 </div>
