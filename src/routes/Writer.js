@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
 
 import MetaTag from '../components/MetaTag';
 import Paging from '../components/Paging';
+import SearchTextForm from '../components/SearchTextForm';
 
 import * as common from '../utils/common';
 import API_SERVER from '../utils/api';
@@ -200,32 +200,6 @@ function Writer() {
         setRefAndFetch({page:1, nickname: value});
     }
 
-    function NicknameForm(props) {
-        const [tempText, setTempText] = useState(props.default);
-
-        //작가 검색 시간 체크
-        let searchTimer;
-        const searchIntervalTime = 500; // 0.5초
-        function clearTime() {
-            clearTimeout(searchTimer);
-        }
-        function setTime() {
-            clearTimeout(searchTimer);
-            searchTimer = setTimeout(() => {props.SearchHandler(tempText)}, searchIntervalTime);
-        }
-
-        return (
-            <Form.Control
-                value={tempText}
-                aria-label='nickname'
-                aria-describedby='writer-nickname'
-                onChange={(e) => setTempText(e.target.value)}
-                onKeyDown={() => clearTime()}
-                onKeyUp={() => setTime()}
-            />
-        );
-    }
-
     //수정 디버그용 console.log
     // 언젠가 뒤로가기 렌더링 두번 해결한다면..
     // let zz;
@@ -263,10 +237,7 @@ function Writer() {
                     {renderWriterList()}
                 </tbody>
             </Table>
-            <InputGroup className='mb-3'>
-                <InputGroup.Text id='writer-nickname'>작가 이름</InputGroup.Text>
-                <NicknameForm SearchHandler={SearchHandler} default={nicknameState}/>
-            </InputGroup>
+            <SearchTextForm label={'작가 이름'} SearchHandler={SearchHandler} default={nicknameState}/>
             <div>
                 <Paging page={pageState} perPage={perPage} count={count} pageBtn={5} handler={pageHandler}/>
             </div>
