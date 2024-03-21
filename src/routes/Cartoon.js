@@ -190,13 +190,13 @@ function Cartoon() {
      * ref 값 갱신하고 목록 api 호출
      * @param {number} page 페이지
      * @param {number} sort 정렬
-     * @param {string} nickname 닉네임
+     * @param {string} title 제목
      */
     function setRefAndFetch({
         page=false,
         sort='default',
         cut=false,
-        title=false,
+        title=false
     }) {
         //false가 아니라면? 즉 값을 받았다면?
         if (page!==false) pageRef.current = page;
