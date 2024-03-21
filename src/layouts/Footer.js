@@ -8,7 +8,7 @@ function Footer() {
     return (
         <footer className='footer'>
             <Container fluid='md' className='d-flex justify-content-between'>
-                <span className='text-white'>푸터 입니다. build 24.03.15</span>
+                <span className='text-white'>푸터 입니다. build 24.03.21</span>
                 <ForceRefresh />
             </Container>
         </footer>
