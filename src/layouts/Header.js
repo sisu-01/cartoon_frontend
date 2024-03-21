@@ -15,7 +15,6 @@ function Header() {
                         <Nav.Link as={Link} to="/">Root</Nav.Link>
                         <Nav.Link as={Link} to="/cartoon">Cartoon</Nav.Link>
                         <Nav.Link as={Link} to="/writer">Writer</Nav.Link>
-                        <Nav.Link as={Link} to="/writer2">Writer2</Nav.Link>
                         <Nav.Link as={Link} to="/series">Test</Nav.Link>
                     </Nav>
                 </Container>
