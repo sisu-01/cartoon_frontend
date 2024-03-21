@@ -95,3 +95,8 @@ a:visited .cartoon-title {
     border-radius: 10px;
     padding: 7px;
 }
+
+.highlight-text {
+    background-color: yellow;
+    font-weight: bold;
+}

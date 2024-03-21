@@ -146,6 +146,8 @@ function Cartoon() {
                 const date = common.dateFormat(i['date']);
                 const isUpdate = common.isDateWithin14Days(i['date']);
                 const isAnony = i['writer_id']==='a'? true : false;
+                const title = (titleRef.current !== '' && titleState !== '')? common.highlightSearchText(i['title'], titleRef.current) : i['title'];
+                
                 newArr.push(
                     <ListGroup.Item key={key} className='d-flex'>
                         <div className='flex-grow-1'>
@@ -154,7 +156,7 @@ function Cartoon() {
                                     {isUpdate?
                                         <span className='update-mark'>UP</span>
                                     : ''}
-                                    <span className='cartoon-title word-break'>{i['title']}</span>
+                                    <span className='cartoon-title word-break' dangerouslySetInnerHTML={{ __html: title }} />
                                     <div className='cartoon-info'>
                                         <span>★{i['recommend']}&nbsp;</span>
                                         <span>{date}</span>

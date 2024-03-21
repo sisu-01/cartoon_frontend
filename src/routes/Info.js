@@ -175,6 +175,8 @@ function Info() {
                     const i = cartoonList[key];
                     const date = common.dateFormat(i['date']);
                     const isUpdate = common.isDateWithin14Days(i['date']);
+                    const title = (titleRef.current !== '' && titleState !== '')? common.highlightSearchText(i['title'], titleRef.current) : i['title'];
+
                     newArr.push(
                         <ListGroup.Item key={key}>
                             <a href={`https://gall.dcinside.com/board/view/?id=cartoon&no=${i['id']}`} target='_blank' rel='noopener noreferrer'>
@@ -182,7 +184,7 @@ function Info() {
                                     {isUpdate?
                                         <span className='update-mark'>UP</span>
                                     : ''}
-                                    <span className='cartoon-title word-break'>{i['title']}</span>
+                                    <span className='cartoon-title word-break' dangerouslySetInnerHTML={{ __html: title }} />
                                     <div className='cartoon-info'>
                                         <span>★{i['recommend']}&nbsp;</span>
                                         <span>{date}</span>

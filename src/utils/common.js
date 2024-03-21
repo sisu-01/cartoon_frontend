@@ -45,45 +45,6 @@ export function isDateWithin14Days(date) {
     return daysDiff >= -14;
 }
 
-/**
- * 나만의 네비게이터 ㅎㅎ
- * @param {String} url history에 추가할 url
- * @param {function} callback 목록 불러올 api
- */
-export function navigate(url, callback) {
-    window.history.pushState(null, null, url);
-    callback();
-}
-
-/**
- * 
- * @param {useRef} page 페이지
- * @param {useRef} sort 개추순
- * @param {useRef} cut 개추컷
- * @param {useRef} writer_sort writer.js sort 정렬들
- * @param {useRef} writer_nickname writer.js 작가 이름 검색
- * @param {function} callback 목록 api
- */
-export function popNavigate({
-    page = 1,
-    sort = false,
-    cut = false,
-    writerSort = false,
-    writerNickname = false,
-    callback = null}) {
-    const popParams = new URLSearchParams(window.location.search);
-    page.current = Number(popParams.get('page')) || 1;
-    if (sort) {
-        sort.current = popParams.get('sort') === 'true' || false;
-    }
-    if (cut) {
-        cut.current = popParams.get('cut') || false;
-    }
-    if (writerSort) {
-        writerSort.current = Number(popParams.get('sort')) || 1;
-    }
-    if (writerNickname) {
-        writerNickname.current = popParams.get('nickname') !== null ? String(popParams.get('nickname')) : ''
-    }
-    callback();
+export function highlightSearchText(text, searchText) {
+    return text.replace(new RegExp(searchText, 'g'), `<span class='highlight-text'>${searchText}</span>`);
 }
