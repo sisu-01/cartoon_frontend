@@ -15,6 +15,7 @@ function Info() {
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
     const nickname = initParam.get('nickname');
+    const isAnony = id==='a'? true : false;
     const prev = localStorage.getItem('prev') || false;
 
     const [init, setInit] = useState(null);
@@ -244,12 +245,11 @@ function Info() {
                         <br/>
                         <div className='d-flex align-items-center'>
                             <h2>
-                                <em className='cartoon-writer'>{nickname}</em>
+                                <span className='cartoon-writer'><em>{nickname}</em>{isAnony? '': <span className='fix-icon'>✅</span>}</span>
                                 <span>님의 작품</span>
                             </h2>
                             <span className='ms-1 text-secondary'>총 {init['count']}</span>
                         </div>
-                        {/* {id==='a'?'유동':`아이디: ${id}`} */}
                     </div>
                     <List />
                 </>

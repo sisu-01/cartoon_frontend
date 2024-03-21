@@ -68,6 +68,10 @@ a:visited .cartoon-title {
     color: #FFA500;
 }
 
+.fix-icon {
+    font-size: 0.7em;
+}
+
 .cartoon-info {
     font-weight: 500;
     line-height: 19px;

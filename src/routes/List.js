@@ -14,9 +14,8 @@ function List() {
     const initParam = new URLSearchParams(window.location.search);
     const id = initParam.get('id');
     const prev = localStorage.getItem('prev') || false;
-
     const [init, setInit] = useState(null);
-
+    
     useEffect(() => {
         async function init() {
             let url = '';
@@ -236,14 +235,14 @@ function List() {
                                 <>
                                     <Link to={`/info?id=${init['writer_id']}&nickname=${init['writer_nickname']}`}
                                         className='cartoon-writer'>
-                                        {init['writer_nickname']}
+                                        <span>{init['writer_nickname']}</span>
+                                        {init['writer_id']==='a'? '' : <span className='fix-icon'>✅</span>}
                                     </Link>
                                     <span>∙</span>
                                     작가
                                 </>
                             )}
                         </span>
-                        {/* {init['writer_id']==='a'?'유동':`아이디: ${init['writer_id']}`} */}
                         <span>시리즈 기능이 완벽하지 않으니 작가 상세 페이지도 확인해보세요.</span>
                     </div>
                     <div className='my-2'>

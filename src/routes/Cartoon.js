@@ -130,6 +130,7 @@ function Cartoon() {
                 const i = cartoonList[key];
                 const date = common.dateFormat(i['date']);
                 const isUpdate = common.isDateWithin14Days(i['date']);
+                const isAnony = i['writer_id']==='a'? true : false;
                 newArr.push(
                     <ListGroup.Item key={key} className='d-flex'>
                         <div className='flex-grow-1'>
@@ -147,7 +148,13 @@ function Cartoon() {
                             </a>
                         </div>
                         <div className='flex-shrink-0'>
-                            <Link to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`} className='cartoon-writer'>{i['writer_nickname']}</Link>
+                            <Link
+                                to={`/info?id=${i['writer_id']}&nickname=${i['writer_nickname']}`}
+                                className='cartoon-writer'
+                            >
+                                <span>{i['writer_nickname']}</span>
+                                {isAnony? '': <span className='fix-icon'>✅</span>}
+                            </Link>
                         </div>
                     </ListGroup.Item>
                 );

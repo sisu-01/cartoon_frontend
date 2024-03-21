@@ -133,9 +133,9 @@ function Writer2() {
         if (writerList) {
             for(const key in writerList) {
                 const i = writerList[key];
-                // const id = i['id'] === 'a'? '유동': i['id'];
                 const URInickname = encodeURIComponent(i['nickname']);
                 const date = common.dateFormat(i['date'], 'short');
+                const isAnony = i['id']==='a'? true : false;
                 newArr.push(
                     <tr
                         key={key}
@@ -143,7 +143,7 @@ function Writer2() {
                         onClick={() => trHandler(`/info?id=${i['id']}&nickname=${URInickname}`)}
                         role='link'>
                         <td>
-                            <span className='cartoon-writer'>{i['nickname']}</span>
+                            <span className='cartoon-writer'>{i['nickname']}{isAnony? '': <span className='fix-icon'>✅</span>}</span>
                         </td>
                         <td>{date}</td>
                         <td>{i['count']}</td>
