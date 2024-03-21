@@ -195,12 +195,12 @@ function Info() {
          */
         function setRefAndFetch({
             page=false,
-            sort=false,
+            sort='default',
             cut=false,
         }) {
             //false가 아니라면? 즉 값을 받았다면?
             if (page!==false) pageRef.current = page;
-            if (sort!==false) sortRef.current = sort;
+            if (sort!=='default') sortRef.current = sort;
             if (cut!==false) cutRef.current = cut;
             getInfo();
         }
